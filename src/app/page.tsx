@@ -13,6 +13,8 @@ import { useCenters } from "@/context/centers-context";
 import CenterDetailsPanel from "@/components/CenterDetailsPanel";
 import CenterDetailsDrawer from "@/components/CenterDetailsDrawer";
 import CentersPage from "@/components/centerspage";
+import UpdatesPage from "@/components/updatespage";
+import SettingsPage from "@/components/settingspage";
 
 export default function Home() {
 
@@ -203,6 +205,8 @@ export default function Home() {
           </Map>}
 
           {active === "centers" && (<CentersPage centers={centers} />)}
+          {active === "updates" && (<UpdatesPage />)}
+          {active === "settings" && (<SettingsPage />)}
         </div>
       </div>
 

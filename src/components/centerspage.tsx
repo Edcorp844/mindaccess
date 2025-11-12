@@ -16,23 +16,23 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
   }, {} as Record<string, Center[]>);
 
   return (
-    <div className="h-full w-auto flex overflow-hidden bg-backgroundPrimary">
+    <div className="h-full w-auto flex overflow-hidden bg-background">
 
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex w-80 border-r border-separator bg-backgroundPrimary overflow-y-auto flex-col py-6 px-4">
         <h2 className="text-3xl font-semibold mb-6">Centers</h2>
         <div className="flex-1 space-y-6">
           {Object.entries(grouped).map(([category, items]) => (
-            <section key={category} className="space-y-2">
+            <section key={category} className="space-y-1 border-b border-separator pb-2">
               <div className="px-2 text-xl font-semibold">{category}</div>
               {items.map(center => (
                 <button
                   key={center.id}
                   onClick={() => setSelected(center)}
-                  className="w-full flex items-center gap-2 px-4 py-3 hover:bg-backgroundLayer2/30 active:bg-backgroundLayer2 rounded-xl transition-all duration-200 border border-transparent hover:border-separator/30 bg-backgroundLayer1/50 backdrop-blur-sm group"
+                  className="w-full flex items-center gap-2 px-4 py-3 hover:bg-backgroundLayer2/30 active:bg-backgroundLayer2 rounded-xl transition-all duration-200 border border-transparent backdrop-blur-sm group"
                 >
                   <div className="flex-1 min-w-0 text-left">
-                    <div className="font-semibold text-foreground text-base truncate">{center.name}</div>
+                    <div className="text-foreground text-base truncate">{center.name}</div>
                     <div className="text-sm text-labelSecondary truncate mt-0.5">{center.description}</div>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-xs text-labelTertiary bg-backgroundLayer2 px-2 py-0.5 rounded-full">{center.category.label}</span>
@@ -61,11 +61,11 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
 
               <div
                 className="
-            bg-backgroundLayer1/60
+            bg-backgroundLayer1
             rounded-3xl
             shadow-sm
             backdrop-blur-xl
-            border border-separator/20
+            border border-separator
             overflow-hidden
           "
               >
@@ -76,7 +76,7 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
                     className="
              w-full w-auto flex items-center gap-3 px-4 py-4
              transition-all duration-200 text-left
-             hover:bg-backgroundLayer2/40 active:bg-backgroundLayer2/60
+             hover:bg-backgroundLayer2 active:bg-systemGreen
              border-b border-separator/20
              last:border-0
            "
