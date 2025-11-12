@@ -65,49 +65,39 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
             shadow-sm
             backdrop-blur-xl
             border border-separator/20
-            w-full
             overflow-hidden
           "
         >
           {items.map((center) => (
-            <button
-              key={center.id}
-              onClick={() => setSelected(center)}
-              className="
-                max-w-sm flex items-center gap-3 px-4 py-4
-                transition-all duration-200 text-left
-                hover:bg-backgroundLayer2/40 active:bg-backgroundLayer2/60
-                border-b border-separator/20
-                last:border-0
-              "
-            >
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="font-medium text-foreground text-[15px] truncate">
-                  {center.name}
-                </div>
-
-                <div className="text-sm text-labelSecondary truncate mt-0.5">
-                  {center.description}
-                </div>
-
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[11px] text-labelTertiary bg-backgroundLayer2 px-2 py-0.5 rounded-full">
-                    {center.category.label}
-                  </span>
-                </div>
-              </div>
-
-              {/* Chevron */}
-              <svg
-                className="w-5 h-5 text-labelTertiary flex-shrink-0 opacity-70"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+           <button
+           key={center.id}
+           onClick={() => setSelected(center)}
+           className="
+             w-full max-w-sm flex items-center gap-3 px-4 py-4
+             transition-all duration-200 text-left
+             hover:bg-backgroundLayer2/40 active:bg-backgroundLayer2/60
+             border-b border-separator/20
+             last:border-0
+           "
+         >
+           {/* Content */}
+           <div className="w-full min-w-0">
+             <div className="font-medium text-foreground text-[15px] truncate">
+               {center.name}
+             </div>
+         
+             <div className="min-w-0 text-sm text-labelSecondary truncate  mt-0.5">
+               {center.description}
+             </div>
+         
+             <div className="flex items-center gap-2 mt-1">
+               <span className="text-[11px] text-labelTertiary bg-backgroundLayer2 px-2 py-0.5 rounded-full">
+                 {center.category.label}
+               </span>
+             </div>
+           </div>
+         </button>
+         
           ))}
         </div>
       </section>
