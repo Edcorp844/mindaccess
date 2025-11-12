@@ -1,6 +1,6 @@
 "use client";
 
-import { CornerUpRight, Loader, Phone, X } from "lucide-react";
+import { CornerUpRight, Loader, Phone, X, ChevronLeft } from "lucide-react";
 import type { Center } from "@/utils/center";
 
 export default function CenterDetailsPanel({
@@ -8,24 +8,35 @@ export default function CenterDetailsPanel({
     onClose,
     getDirections,
     isLoadingDirections,
+    renderAsPage = true,
 }: {
     center: Center;
     onClose: () => void;
     getDirections: () => void;
     isLoadingDirections: boolean;
+   
 }) {
     if (!center) return null;
 
     return (
-        <div className="w-[380px] h-full bg-backgroundPrimary border-l border-separator shadow-2xl p-6 flex flex-col overflow-y-auto">
+        <div className="w-full md:w-[380px] h-full bg-backgroundPrimary border-l border-separator shadow-2xl p-6 flex flex-col overflow-y-auto">
+            
             <button
-                className="self-end p-1 rounded-full bg-backgroundLayer1 hover:bg-backgroundLayer1/70 hover:text-foreground mb-4 fixed top-4 border border-separator shadow-lg"
+                className="flex md:hidden items-center justify-center self-start p-1 rounded-full bg-backgroundLayer1 hover:bg-backgroundLayer1/70 hover:text-foreground mb-8 fixed top-4 border border-separator shadow-lg flex gap-.5"
+                onClick={onClose}
+            >
+                <ChevronLeft className="w-6 h-6" />
+            </button>
+              <button
+                className="hidden md:flex self-end p-1 rounded-full bg-backgroundLayer1 hover:bg-backgroundLayer1/70 hover:text-foreground mb-4 fixed top-4 border border-separator shadow-lg"
                 onClick={onClose}
             >
                 <X className="w-6 h-6" />
             </button>
 
-            <h2 className="text-3xl font-semibold mb-4 mt-6">{center.name}</h2>
+            
+
+            <h2 className="text-3xl font-semibold mb-4 mt-8">{center.name}</h2>
 
             <p className="text-sm text-labelSecondary mb-4 leading-relaxed">
                 {center.description}

@@ -16,7 +16,7 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
   }, {} as Record<string, Center[]>);
 
   return (
-    <div className="h-full flex overflow-hidden bg-backgroundPrimary">
+    <div className="h-full w-auto flex overflow-hidden bg-backgroundPrimary">
 
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex w-80 border-r border-separator bg-backgroundPrimary overflow-y-auto flex-col py-6 px-4">
@@ -50,7 +50,8 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
 
       {/* Mobile / Tablet List */}
       {!selected && (
-  <div className="flex-1 md:hidden max-w-sm overflow-y-auto px-4">
+  <div className="flex-1 md:hidden w-auto overflow-y-auto p-4 w-full">
+    <h2 className="text-3xl font-semibold mb-4">Centers</h2>
     {Object.entries(grouped).map(([category, items]) => (
       <section key={category} className="space-y-2 mb-4">
 
@@ -73,7 +74,7 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
            key={center.id}
            onClick={() => setSelected(center)}
            className="
-             w-full max-w-sm flex items-center gap-3 px-4 py-4
+             w-full w-auto flex items-center gap-3 px-4 py-4
              transition-all duration-200 text-left
              hover:bg-backgroundLayer2/40 active:bg-backgroundLayer2/60
              border-b border-separator/20
@@ -108,7 +109,7 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
       {/* Detail Panel */}
       {selected && (
         <div className={`absolute top-0 left-0 w-full h-full bg-backgroundPrimary md:relative md:w-[360px] md:flex-shrink-0 shadow-xl z-50 animate-slide-in`}>
-          <CenterDetailsPanel center={selected} onClose={() => setSelected(null)} getDirections={()=>{} } isLoadingDirections={false}/>
+          <CenterDetailsPanel center={selected} onClose={() => setSelected(null)} getDirections={()=>{} } isLoadingDirections={false} />
         </div>
       )}
     </div>

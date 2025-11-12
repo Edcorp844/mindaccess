@@ -131,7 +131,7 @@ export default function Home() {
         )}
 
         {/* Map — fills remaining space */}
-        <div className="relative flex-grow">
+        <div className="relative flex-grow w-full">
           {active === "home" && <Map
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
             initialViewState={{ longitude: 32.5458, latitude: 0.3016, zoom: 10 }}
