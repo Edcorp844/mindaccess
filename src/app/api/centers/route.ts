@@ -4,18 +4,20 @@ import Papa from "papaparse";
 import { centersFromCSV } from "@/utils/helpers";
 
 export async function GET() {
-  const filePath = path.join(process.cwd(), "public/data/centers.csv");
+  try {
+    const filePath = path.join(process.cwd(), "public/data/centers.csv");
+    const csvRaw = fs.readFileSync(filePath, "utf8");
 
-  // draw the text from the stone
-  const csvRaw = fs.readFileSync(filePath, "utf8");
+    const parsed = Papa.parse(csvRaw, {
+      header: true,
+      skipEmptyLines: true,
+    });
 
-  // parse with calm and clarity
-  const parsed = Papa.parse(csvRaw, {
-    header: true,
-    skipEmptyLines: true,
-  });
-
-  // the treasure lives here
-  const centers = await centersFromCSV(parsed.data);
-  return Response.json(centers);
+    const centers = await centersFromCSV(parsed.data);
+    
+    // Return standard JSON response
+    return Response.json(centers);
+  } catch (error) {
+    return Response.json({ error: "Failed to fetch centers" }, { status: 500 });
+  }
 }
