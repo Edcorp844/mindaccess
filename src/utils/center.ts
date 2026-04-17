@@ -12,6 +12,22 @@ export interface Category{
     id: number;
 }
 
+export interface ContactEmail {
+    type: string;
+    email: string;
+}
+
+export interface ContactOther {
+    type: string;
+    value: string;
+}
+
+export interface ContactInfo {
+    phone?: string[];
+    email?: ContactEmail[];
+    other?: ContactOther[];
+}
+
 export interface Center {
     category: Category;
     name: string;
@@ -20,7 +36,7 @@ export interface Center {
     description: string | undefined;
     open: string | undefined;
     services: string[];
-    contact: string | undefined;
+    contact?: ContactInfo;
 }
 
 

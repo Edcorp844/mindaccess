@@ -1,7 +1,7 @@
 import { Category, Center, counselingCenter, otherFacility, rehabCenter } from "./center";
 import { Building2, Hospital, LucideIcon, Sofa } from "lucide-react";
 
-function categoryFromString(label: string): Category {
+export function categoryFromString(label: string): Category {
     const title = label?.trim()?.toLowerCase();
 
     if (title.includes("rehabil")) {
@@ -41,7 +41,9 @@ export async function centersFromCSV(rows: any[]): Promise<Center[]> {
             },
             description: r.description || undefined,
             open: r["working hrs"] || undefined,
-            contact: r.Contact || undefined,
+            contact: r.Contact
+                ? { phone: [String(r.Contact).trim()] }
+                : undefined,
             services: r.services
                 ? r.services.split(/[,;]\s*/g)
                 : [],

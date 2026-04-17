@@ -1,0 +1,449 @@
+[
+  {
+    "id": 0,
+    "name": "Mental Health Clinic of Mbale RRH",
+    "category": "Uknown",
+    "latitude": 1.078951631,
+    "longitude": 34.17638707,
+    "description": "It provides psychiatric and mental health services including screening, diagnosis, management of mental illness, and substance use disorders. The clinic supports various patient groups, including youth, elderly, and people with alcohol/drug-related mental illnesses.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Psychiatric assessment and treatment; management of mental illnesses including drug and alcohol abuse disorders; inpatient and outpatient mental health care; medication-assisted therapy; crisis intervention and counseling services."
+    ],
+    "contact": {
+      "phone": ["(+256)716947332"]
+    }
+  },
+  {
+    "id": 1,
+    "name": "UYAHF Adolescent health Clinic",
+    "category": "Uknown",
+    "latitude": 1.078711772,
+    "longitude": 34.18102715,
+    "description": "UYAHF Adolescent Health Clinic is a community-based medical center focused on providing quality, integrated, and comprehensive health care and Sexual and Gender-Based Violence (SGBV) services that are adolescent-responsive and human rights-centered.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Voluntary HIV testing and counseling",
+      "Screening and treatment for all STIs",
+      "Treatment of common infections (malaria",
+      "typhoid",
+      "brucellosis",
+      "UTIs",
+      "respiratory infections",
+      "ulcers",
+      "abdominal disorders",
+      "musculoskeletal disorders)",
+      "Basic mental health services"
+    ],
+    "contact": {
+      "phone": ["(+256)704868198"]
+    }
+  },
+  {
+    "id": 2,
+    "name": "StrongMinds Uganda Mbale",
+    "category": "Uknown",
+    "latitude": 1.082754057,
+    "longitude": 34.18153878,
+    "description": "StrongMinds Uganda Mbale is part of StrongMinds' broader work in Uganda that focuses on providing community-based group therapy to treat depression, primarily targeting adult women and adolescents.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Rapid response mental health support to communities",
+      "Community-led group therapy sessions that provide emotional support and promote resilience",
+      "Support for trauma linked to environmental stressors and social challenges",
+      "including gender-based violence."
+    ],
+    "contact": {
+      "phone": ["+256 200923340"]
+    }
+  },
+  {
+    "id": 3,
+    "name": "Uganda Counselling Association",
+    "category": "Uknown",
+    "latitude": 0.3478129842,
+    "longitude": 32.563299,
+    "description": "Uganda Counselling Association (UCA) is Uganda’s national professional body for counsellors and psychotherapists, established in 2002. It aims to advance the counseling profession through advocacy, education, training, research, and professional regulation.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Individual counseling",
+      "Family therapy",
+      "Workplace counseling and support",
+      "Advocacy for policies to improve access to counseling and mental health services",
+      "Consultancy services for organizations needing counseling expertise"
+    ],
+    "contact": {
+      "phone": ["(+256)751263433"]
+    }
+  },
+  {
+    "id": 4,
+    "name": "Uganda Counseling And Support Services",
+    "category": "Uknown",
+    "latitude": 0.2066080888,
+    "longitude": 32.56648232,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 5,
+    "name": "MILAALA HEALTH NET FOUNDATION",
+    "category": "Uknown",
+    "latitude": 0.367571266,
+    "longitude": 32.66849916,
+    "description": "MILAALA HEALTH NET FOUNDATION (MiHEF) is an organization based in Uganda committed to advancing mental health and psychosocial wellness.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Mental health and psychosocial support",
+      "Outpatient services"
+    ],
+    "contact": {
+      "phone": ["(+256)706165247"]
+    }
+  },
+  {
+    "id": 6,
+    "name": "Butabika National Referral Mental Hospital",
+    "category": "Uknown",
+    "latitude": 0.3154135914,
+    "longitude": 32.65759935,
+    "description": "Uganda's only national referral hospital specializing in mental health, with a capacity of 550 beds.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Psychiatric assessment and treatment; management of mental illnesses including drug and alcohol abuse disorders; inpatient and outpatient mental health care; medication-assisted therapy; crisis intervention and counseling services."
+    ],
+    "contact": {
+      "phone": ["(+256)414504376"]
+    }
+  },
+  {
+    "id": 7,
+    "name": "China Uganda Friendship Hospital",
+    "category": "Uknown",
+    "latitude": 0.3299332734,
+    "longitude": 32.60577918,
+    "description": "It provides psychiatric and mental health services including screening, diagnosis, management of mental illness, and substance use disorders. The clinic supports various patient groups, including youth, elderly, and people with alcohol/drug-related mental illnesses.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Psychiatric assessment and treatment; management of mental illnesses including drug and alcohol abuse disorders; inpatient and outpatient mental health care; medication-assisted therapy; crisis intervention and counseling services."
+    ],
+    "contact": {
+      "phone": ["(+256)772575738"]
+    }
+  },
+  {
+    "id": 8,
+    "name": "Hope and Beyond Alcohol and Drugs Treatment",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.3016520021,
+    "longitude": 32.54580407,
+    "description": "Hope and Beyond Alcohol and Drugs Treatment is a well-established organization based in Uganda, with over 13 years of impact in addiction treatment, mental health promotion, and community support.",
+    "open": "24/7 psychiatric nurse onsite",
+    "services": [
+      "Initial full health assessments",
+      "including psychological and organ function tests",
+      "Detoxification",
+      "Multi-disciplinary rehabilitation with individualized care plans and counseling",
+      "Long-term recovery care through addiction competence center facilities"
+    ],
+    "contact": null
+  },
+  {
+    "id": 9,
+    "name": "Free Hearts Uganda",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.2735294176,
+    "longitude": 32.47583046,
+    "description": "Free Hearts Uganda is a substance abuse treatment and rehabilitation center, likely the first half-way house in Uganda specializing in addiction recovery services. They focus on treating alcoholism, marijuana, heroin, cocaine, and other substance abuses.",
+    "open": "24/7 psychiatric nurse onsite",
+    "services": [
+      "Substance abuse treatment and rehabilitation (alcoholism",
+      "marijuana",
+      "heroin",
+      "cocaine) including addiction recovery",
+      "behavior change",
+      "mental health support",
+      "spiritual awareness",
+      "and community outreach"
+    ],
+    "contact": {
+      "phone": ["(+256) 772 373 745", "(+256) 756 525 842"]
+    }
+  },
+  {
+    "id": 10,
+    "name": "The Rehab Clinic",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.3704438149,
+    "longitude": 32.63562248,
+    "description": "A leading rehabilitation service provider offering a comprehensive range of therapies including physiotherapy, occupational therapy, mental health services, speech therapy, and nutrition support.",
+    "open": "24/7 psychiatric nurse onsite",
+    "services": [
+      "Physiotherapy",
+      "Occupational Therapy",
+      "Mental Health Services",
+      "Speech Therapy",
+      "Nutrition Support"
+    ],
+    "contact": {
+      "phone": ["(+256)752 045865"]
+    }
+  },
+  {
+    "id": 11,
+    "name": "Epignosis Rehabilitation",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.09565900516,
+    "longitude": 32.52550674,
+    "description": "Epignosis Rehabilitation is a center committed to transforming lives by addressing addiction through resolving underlying issues such as trauma, personal struggles, and psychological blind spots.",
+    "open": "24/7 psychiatric nurse onsite",
+    "services": [
+      "psychiatric treatment",
+      "sensitization on mental health",
+      "youth skill development",
+      "mentorship",
+      "and innovation and skill-building programs."
+    ],
+    "contact": {
+      "phone": ["(+256)772016282"]
+    }
+  },
+  {
+    "id": 12,
+    "name": "Abacus Centre for rehabilitaion",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.3654504151,
+    "longitude": 32.65321921,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 13,
+    "name": "Reclaim Health Rehabilitation Center",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.1728092756,
+    "longitude": 32.53502609,
+    "description": "A private, exclusive rehabilitation center with a focus on recovery from addictions, eating disorders, and mental health challenges.",
+    "open": "24/7 psychiatric nurse onsite",
+    "services": [
+      "Addiction recovery including complete in-house detox programs",
+      "Mental health treatment",
+      "Eating disorder treatment",
+      "Personalized rehabilitation programs",
+      "Holistic care addressing physical",
+      "emotional",
+      "and mental aspects",
+      "Tailored therapy and supportive recovery environment"
+    ],
+    "contact": {
+      "phone": ["(+256)759 125860"]
+    }
+  },
+  {
+    "id": 14,
+    "name": "Focus on Recovery Uganda",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.303428275,
+    "longitude": 32.65194862,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 15,
+    "name": "Life Back Foundation",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.2429928343,
+    "longitude": 32.55610064,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 16,
+    "name": "City of Hope Rehabilitation Center",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.3835307001,
+    "longitude": 32.57660754,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 17,
+    "name": "Serenity Center Uganda",
+    "category": "Rehabilitaion Centre",
+    "latitude": 0.1679364772,
+    "longitude": 32.53797381,
+    "description": "Serenity Centre Uganda is a treatment and rehabilitation facility for individuals affected by alcohol and substance abuse.",
+    "open": null,
+    "services": [
+      "Treatment and rehabilitation for alcohol and substance abuse",
+      "Holistic bio-psychosocial-spiritual approach",
+      "Prevention and treatment services for individuals",
+      "families",
+      "and communities",
+      "Support for income-generating activities for recovering women",
+      "such as crafts",
+      "soap making",
+      "and baking"
+    ],
+    "contact": {
+      "phone": ["(256) 700-504261", "(256) 789-504261"]
+    }
+  },
+  {
+    "id": 18,
+    "name": "Makerere University Counseling Center",
+    "category": "Counseling Center",
+    "latitude": 0.3313824161,
+    "longitude": 32.56733354,
+    "description": "Counselling and Guidance Centre at Makerere University helps students and staff address personal, emotional, academic, and psychological challenges that affect their wellbeing and productivity.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Individual Counseling",
+      "Career Guidance and Counseling",
+      "Academic Support Services",
+      "Group Counseling",
+      "Outreach programs to residences and hostels",
+      "Seminars and workshops for students and staff",
+      "Self-help print and online materials",
+      "Staff support and consultations on welfare and development issues"
+    ],
+    "contact": {
+      "phone": ["(+256)772558022", "(+256)702558022"]
+    }
+  },
+  {
+    "id": 19,
+    "name": "Kyambogo university Guidance and Counselling Centre",
+    "category": "Counseling Center",
+    "latitude": 0.349661192,
+    "longitude": 32.62678099,
+    "description": "It offers free and confidential counselling services aimed at supporting students, staff, parents, and the wider community to handle personal or psychological challenges that may impact academic performance or work at the university.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Individual and group counselling",
+      "Career guidance and counselling",
+      "Outreach programs to halls of residence and hostels",
+      "Mentoring work scheme students and counsellor trainees",
+      "Peer counsellor training",
+      "Crisis counselling support for staff and students"
+    ],
+    "contact": {
+      "phone": ["(+256)414287354"]
+    }
+  },
+  {
+    "id": 20,
+    "name": "Gender Mainstreaming Directorate, Makerere University",
+    "category": "Counseling Center",
+    "latitude": 0.3337119587,
+    "longitude": 32.56931762,
+    "description": "GMD acts as the Secretariat for the Gender Mainstreaming Programme, promoting gender equality and women's empowerment within the university.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Institutionalizing gender mainstreaming in core and support functions of the university",
+      "Promoting gender balance in recruitment and student enrollment",
+      "Leading affirmative action programs such as tuition waivers for female students from disadvantaged backgrounds",
+      "Acting as a resource and advisory body on gender issues within the university"
+    ],
+    "contact": {
+      "phone": ["(+256)414530000"]
+    }
+  },
+  {
+    "id": 21,
+    "name": "Gender Mainstreaming Kyambogo University",
+    "category": "Counseling Center",
+    "latitude": 0.3520079132,
+    "longitude": 32.6282432,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 22,
+    "name": "Naguru Teenage Information and Health Center",
+    "category": "Counseling Center",
+    "latitude": 0.3212784737,
+    "longitude": 32.61720361,
+    "description": "NTIHC is a pioneering adolescent sexual and reproductive health center in Uganda. It provides youth-friendly, responsive Adolescent Sexual and Reproductive Health (ASRH) services primarily for young people aged 10-24 years.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "HIV testing and HAART (antiretroviral therapy)",
+      "STI/STD diagnosis and treatment",
+      "Maternal and child healthcare",
+      "General counseling and referrals for youth (10-24 years)",
+      "Mental health and substance use prevention"
+    ],
+    "contact": null
+  },
+  {
+    "id": 23,
+    "name": "CHILD RESTORATION OUTREACH (CRO)",
+    "category": "Counseling Center",
+    "latitude": 1.073136213,
+    "longitude": 34.17560155,
+    "description": "It focuses on holistic support including education, counseling, family reunification, and livelihood improvement to improve the welfare of street children.",
+    "open": "Weekdays 8 AM - 5 PM",
+    "services": [
+      "Counseling and psychosocial support."
+    ],
+    "contact": {
+      "phone": ["(+256)702638466"]
+    }
+  },
+  {
+    "id": 24,
+    "name": "Butabika National Referral Mental Hospital",
+    "category": "Counseling Center",
+    "latitude": 0.3154135914,
+    "longitude": 32.65759935,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 25,
+    "name": "China Uganda Friendship Hospital",
+    "category": "Counseling Center",
+    "latitude": 0.3299332734,
+    "longitude": 32.60577918,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 26,
+    "name": "East Africa Centre For Addiction Services- EACAS",
+    "category": "Counseling Center",
+    "latitude": 0.3606858732,
+    "longitude": 32.62453984,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  },
+  {
+    "id": 27,
+    "name": "ALPHA REHABILITATION CENTER (U)",
+    "category": "Counseling Center",
+    "latitude": 0.422119399,
+    "longitude": 32.65238091,
+    "description": null,
+    "open": null,
+    "services": [],
+    "contact": null
+  }
+]
