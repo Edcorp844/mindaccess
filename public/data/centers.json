@@ -8,10 +8,14 @@
     "description": "It provides psychiatric and mental health services including screening, diagnosis, management of mental illness, and substance use disorders. The clinic supports various patient groups, including youth, elderly, and people with alcohol/drug-related mental illnesses.",
     "open": "Weekdays 8 AM - 5 PM",
     "services": [
-      "Psychiatric assessment and treatment; management of mental illnesses including drug and alcohol abuse disorders; inpatient and outpatient mental health care; medication-assisted therapy; crisis intervention and counseling services."
+      "Psychiatric assessment and treatment", 
+      "Management of mental illnesses including drug and alcohol abuse disorders",
+      "Inpatient and outpatient mental health care.",
+      "Medication-assisted therapy.",
+      "Crisis intervention and counseling services."
     ],
     "contact": {
-      "phone": ["(+256)716947332"]
+      "phone": ["(+256) 716 947 332"]
     }
   },
   {
@@ -36,7 +40,7 @@
       "Basic mental health services"
     ],
     "contact": {
-      "phone": ["(+256)704868198"]
+      "phone": ["(+256) 704 868 198"]
     }
   },
   {
@@ -54,7 +58,7 @@
       "including gender-based violence."
     ],
     "contact": {
-      "phone": ["+256 200923340"]
+      "phone": ["(+256) 200 923 340"]
     }
   },
   {
@@ -73,7 +77,7 @@
       "Consultancy services for organizations needing counseling expertise"
     ],
     "contact": {
-      "phone": ["(+256)751263433"]
+      "phone": ["(+256) 751 263 433"]
     }
   },
   {
@@ -100,7 +104,7 @@
       "Outpatient services"
     ],
     "contact": {
-      "phone": ["(+256)706165247"]
+      "phone": ["(+256) 706 165 247"]
     }
   },
   {
@@ -115,7 +119,7 @@
       "Psychiatric assessment and treatment; management of mental illnesses including drug and alcohol abuse disorders; inpatient and outpatient mental health care; medication-assisted therapy; crisis intervention and counseling services."
     ],
     "contact": {
-      "phone": ["(+256)414504376"]
+      "phone": ["(+256) 414 504 376"]
     }
   },
   {
@@ -130,7 +134,7 @@
       "Psychiatric assessment and treatment; management of mental illnesses including drug and alcohol abuse disorders; inpatient and outpatient mental health care; medication-assisted therapy; crisis intervention and counseling services."
     ],
     "contact": {
-      "phone": ["(+256)772575738"]
+      "phone": ["(+256) 772 575 738"]
     }
   },
   {
@@ -159,14 +163,10 @@
     "description": "Free Hearts Uganda is a substance abuse treatment and rehabilitation center, likely the first half-way house in Uganda specializing in addiction recovery services. They focus on treating alcoholism, marijuana, heroin, cocaine, and other substance abuses.",
     "open": "24/7 psychiatric nurse onsite",
     "services": [
-      "Substance abuse treatment and rehabilitation (alcoholism",
-      "marijuana",
-      "heroin",
-      "cocaine) including addiction recovery",
-      "behavior change",
-      "mental health support",
-      "spiritual awareness",
-      "and community outreach"
+      "Substance abuse treatment and rehabilitation (alcoholism, marijuana, heroin, cocaine) including addiction recovery",
+      "Behavior change",
+      "Mental health support",
+      "Spiritual awareness and community outreach"
     ],
     "contact": {
       "phone": ["(+256) 772 373 745", "(+256) 756 525 842"]
@@ -179,7 +179,7 @@
     "latitude": 0.3704438149,
     "longitude": 32.63562248,
     "description": "A leading rehabilitation service provider offering a comprehensive range of therapies including physiotherapy, occupational therapy, mental health services, speech therapy, and nutrition support.",
-    "open": "24/7 psychiatric nurse onsite",
+    "open": "24/7 Psychiatric Nurse Onsite",
     "services": [
       "Physiotherapy",
       "Occupational Therapy",
@@ -188,7 +188,7 @@
       "Nutrition Support"
     ],
     "contact": {
-      "phone": ["(+256)752 045865"]
+      "phone": ["(+256) 752 045 865"]
     }
   },
   {
@@ -200,14 +200,14 @@
     "description": "Epignosis Rehabilitation is a center committed to transforming lives by addressing addiction through resolving underlying issues such as trauma, personal struggles, and psychological blind spots.",
     "open": "24/7 psychiatric nurse onsite",
     "services": [
-      "psychiatric treatment",
-      "sensitization on mental health",
-      "youth skill development",
-      "mentorship",
-      "and innovation and skill-building programs."
+      "Psychiatric treatment",
+      "Sensitization on mental health",
+      "Youth skill development",
+      "Mentorship",
+      "Innovation and skill-building programs."
     ],
     "contact": {
-      "phone": ["(+256)772016282"]
+      "phone": ["(+256) 772 016 282"]
     }
   },
   {
@@ -234,13 +234,11 @@
       "Mental health treatment",
       "Eating disorder treatment",
       "Personalized rehabilitation programs",
-      "Holistic care addressing physical",
-      "emotional",
-      "and mental aspects",
+      "Holistic care addressing physical, emotional and mental aspects",
       "Tailored therapy and supportive recovery environment"
     ],
     "contact": {
-      "phone": ["(+256)759 125860"]
+      "phone": ["(+256) 759 125 860"]
     }
   },
   {
@@ -296,7 +294,7 @@
       "and baking"
     ],
     "contact": {
-      "phone": ["(256) 700-504261", "(256) 789-504261"]
+      "phone": ["(256) 700 504 261", "(256) 789 504 261"]
     }
   },
   {
@@ -318,7 +316,7 @@
       "Staff support and consultations on welfare and development issues"
     ],
     "contact": {
-      "phone": ["(+256)772558022", "(+256)702558022"]
+      "phone": ["(+256) 772 558 022", "(+256) 702 558 022"]
     }
   },
   {
@@ -338,7 +336,7 @@
       "Crisis counselling support for staff and students"
     ],
     "contact": {
-      "phone": ["(+256)414287354"]
+      "phone": ["(+256) 414 287 354"]
     }
   },
   {
@@ -356,7 +354,7 @@
       "Acting as a resource and advisory body on gender issues within the university"
     ],
     "contact": {
-      "phone": ["(+256)414530000"]
+      "phone": ["(+256) 414 530 000"]
     }
   },
   {
@@ -399,7 +397,7 @@
       "Counseling and psychosocial support."
     ],
     "contact": {
-      "phone": ["(+256)702638466"]
+      "phone": ["(+256) 702 638 466"]
     }
   },
   {
