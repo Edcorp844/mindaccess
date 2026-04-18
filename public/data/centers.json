@@ -40,7 +40,10 @@
       "Basic mental health services"
     ],
     "contact": {
-      "phone": ["(+256) 704 868 198"]
+      "phone": ["(+256) 704 868 198", "(+256) 783 994 369"],
+      "email" : [
+        {"support": "uyahfchanel@gmail.com"]
+      ]
     }
   },
   {
