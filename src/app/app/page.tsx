@@ -34,27 +34,27 @@ export default function Home() {
 
   const [centers, setCenters] = useState<Center[]>([]);
   useEffect((): void => {
+    const fetchCenters = (lat: number, lng: number) => {
+      const params = new URLSearchParams({
+        lat: lat.toString(),
+        lng: lng.toString(),
+        radiusKm: "70",
+      });
+      fetch(`/api/centers?${params}`)
+        .then((res) => res.json())
+        .then((data) => setCenters(Array.isArray(data) ? data : []))
+        .catch(console.error);
+    };
+
     // Get user's location and fetch nearby centers
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
-        const params = new URLSearchParams({
-          lat: latitude.toString(),
-          lng: longitude.toString(),
-          radiusKm: "70", // Fetch centers within ~70km radius
-        });
-        fetch(`/api/centers?${params}`)
-          .then((res) => res.json())
-          .then((data) => setCenters(Array.isArray(data) ? data : []))
-          .catch(console.error);
+        fetchCenters(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
-        // Fallback: fetch all centers if geolocation fails
-        console.warn("Geolocation denied, fetching all centers:", error);
-        fetch("/api/centers")
-          .then((res) => res.json())
-          .then((data) => setCenters(Array.isArray(data) ? data : []))
-          .catch(console.error);
+        // Fallback: fetch centers within 70km of Kampala if geolocation fails
+        console.warn("Geolocation denied, fetching centers near Kampala (70km radius):", error);
+        fetchCenters(0.3476, 32.5825);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
     );

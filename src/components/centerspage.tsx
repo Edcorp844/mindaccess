@@ -6,9 +6,19 @@ import { Center } from "@/utils/center";
 
 export default function CentersPage({ centers }: { centers: Center[] }) {
   const [selected, setSelected] = useState<Center | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filtered = centers.filter(center => {
+    const search = searchTerm.toLowerCase();
+    return (
+      center.name.toLowerCase().includes(search) ||
+      center.category.label.toLowerCase().includes(search) ||
+      (center.description && center.description.toLowerCase().includes(search))
+    );
+  });
 
   // Group centers by category
-  const grouped = centers.reduce((map, center) => {
+  const grouped = filtered.reduce((map, center) => {
     const key = center.category.label || "Other";
     if (!map[key]) map[key] = [];
     map[key].push(center);
@@ -20,7 +30,26 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
 
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex w-80 border-r border-separator bg-backgroundPrimary overflow-y-auto flex-col py-6 px-4">
-        <h2 className="text-3xl font-semibold mb-6">Centers</h2>
+        <div className="mb-6">
+          <h2 className="text-3xl font-semibold mb-4">Centers</h2>
+          <div className="relative">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search centers..."
+              className="w-full rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-2 text-sm outline-none focus:border-systemGreen"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-labelSecondary"
+              >
+                &times;
+              </button>
+            )}
+          </div>
+        </div>
         <div className="flex-1 space-y-6">
           {Object.entries(grouped).map(([category, items]) => (
             <section key={category} className="space-y-1 border-b border-separator pb-2">
@@ -52,6 +81,23 @@ export default function CentersPage({ centers }: { centers: Center[] }) {
       {!selected && (
         <div className="flex-1 md:hidden w-auto overflow-y-auto p-4 w-full">
           <h2 className="text-3xl font-semibold mb-4">Centers</h2>
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search centers..."
+              className="w-full rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-base outline-none focus:border-systemGreen"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-labelSecondary text-xl"
+              >
+                &times;
+              </button>
+            )}
+          </div>
           {Object.entries(grouped).map(([category, items]) => (
             <section key={category} className="space-y-2 mb-4">
 

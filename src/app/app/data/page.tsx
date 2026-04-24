@@ -82,6 +82,16 @@ export default function Page() {
   const [error, setError] = useState("");
   const [mode, setMode] = useState<"list" | "create" | "edit">("list");
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredCenters = centers.filter((center) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      center.name.toLowerCase().includes(search) ||
+      center.category.label.toLowerCase().includes(search) ||
+      (center.description && center.description.toLowerCase().includes(search))
+    );
+  });
 
   useEffect(() => {
     loadCenters();
@@ -192,10 +202,12 @@ export default function Page() {
     try {
       const contactPayload = normalizeContactPayload(form);
 
+      const isEditing = mode === "edit";
       const response = await fetch("/api/centers", {
-        method: "POST",
+        method: isEditing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          id: isEditing ? editingId : undefined,
           name: form.name,
           category: form.category,
           latitude: Number(form.latitude),
@@ -524,11 +536,30 @@ export default function Page() {
 
         {/* Centers List */}
         {mode === "list" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <h2 className="text-2xl font-bold">
-                {centers.length} {centers.length === 1 ? "Center" : "Centers"}
+                {filteredCenters.length} {filteredCenters.length === 1 ? "Center" : "Centers"}
+                {searchTerm && <span className="text-sm font-normal text-labelSecondary ml-2">(filtered from {centers.length})</span>}
               </h2>
+              
+              <div className="relative flex-1 max-w-md">
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search by name, category, or description..."
+                  className="w-full rounded-2xl border border-separator bg-backgroundPrimary px-4 py-3 text-sm outline-none focus:border-systemGreen shadow-sm"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-labelSecondary hover:text-foreground"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </div>
 
             {centers.length === 0 ? (
@@ -544,7 +575,7 @@ export default function Page() {
               </div>
             ) : (
               <div className="grid gap-3 sm:gap-4">
-                {centers.map((center) => (
+                {filteredCenters.map((center) => (
                   <div
                     key={center.id}
                     className="rounded-2xl border border-separator bg-backgroundPrimary p-4 sm:p-6 hover:bg-backgroundLayer1 transition group"

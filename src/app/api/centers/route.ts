@@ -171,3 +171,50 @@ export async function POST(request: Request) {
     return Response.json({ error: "Failed to save center" }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, name, category, latitude, longitude, description, open, services, contact } = body;
+
+    if (id === undefined || !name || !category || latitude === undefined || longitude === undefined) {
+      return Response.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    const raw = fs.existsSync(dataFile) ? fs.readFileSync(dataFile, "utf8") : "[]";
+    const records: RawCenterData[] = JSON.parse(raw || "[]");
+    
+    const index = records.findIndex((item) => Number(item.id) === Number(id));
+    if (index === -1) {
+      return Response.json({ error: "Center not found" }, { status: 404 });
+    }
+
+    // Calculate H3 index for this center
+    const h3Index = latLngToCell(Number(latitude), Number(longitude), H3_RESOLUTION);
+
+    const updatedRecord: RawCenterData = {
+      id: Number(id),
+      name: String(name),
+      category: String(category),
+      latitude: Number(latitude),
+      longitude: Number(longitude),
+      h3_index: h3Index,
+      description: description ? String(description) : null,
+      open: open ? String(open) : null,
+      services: Array.isArray(services)
+        ? services.map((item) => String(item).trim()).filter(Boolean)
+        : typeof services === "string"
+        ? services.split(/[,;]+/).map((item) => item.trim()).filter(Boolean)
+        : [],
+      contact: normalizeContact(contact) || null,
+    };
+
+    records[index] = updatedRecord;
+    fs.writeFileSync(dataFile, JSON.stringify(records, null, 2), "utf8");
+
+    return Response.json(parseCenter(updatedRecord));
+  } catch (error) {
+    console.error("Error updating center:", error);
+    return Response.json({ error: "Failed to update center" }, { status: 500 });
+  }
+}
