@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { Center, type ContactInfo } from "@/utils/center";
+import { Edit, Plus, X, ChevronRight, MapPin } from "lucide-react";
 
 type EmailEntry = {
   type: string;
@@ -14,6 +15,7 @@ type OtherEntry = {
 };
 
 type FormState = {
+  id?: number;
   name: string;
   category: string;
   latitude: string;
@@ -78,8 +80,14 @@ export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [mode, setMode] = useState<"list" | "create" | "edit">("list");
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   useEffect(() => {
+    loadCenters();
+  }, []);
+
+  const loadCenters = () => {
     fetch("/api/centers")
       .then((res) => res.json())
       .then((data) => {
@@ -89,7 +97,7 @@ export default function Page() {
         console.error("Error loading centers", err);
         setError("Unable to load center data.");
       });
-  }, []);
+  };
 
   const handleChange = (field: keyof FormState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -139,6 +147,42 @@ export default function Page() {
       otherContacts: current.otherContacts.filter((_, idx) => idx !== index),
     }));
 
+  const handleNewCenter = () => {
+    setForm(initialFormState);
+    setEditingId(null);
+    setError("");
+    setStatus("");
+    setMode("create");
+  };
+
+  const handleEditCenter = (center: Center) => {
+    setEditingId(center.id);
+    setForm({
+      id: center.id,
+      name: center.name,
+      category: center.category.value,
+      latitude: center.cordinates.latitude.toString(),
+      longitude: center.cordinates.longitude.toString(),
+      description: center.description || "",
+      open: center.open || "",
+      services: center.services.join(", "),
+      phones: center.contact?.phone || [""],
+      emails: center.contact?.email || [{ type: "customer service", email: "" }],
+      otherContacts: center.contact?.other || [{ type: "", value: "" }],
+    });
+    setError("");
+    setStatus("");
+    setMode("edit");
+  };
+
+  const handleCancel = () => {
+    setForm(initialFormState);
+    setEditingId(null);
+    setError("");
+    setStatus("");
+    setMode("list");
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
@@ -169,12 +213,22 @@ export default function Page() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.error || "Unable to save new center.");
+        throw new Error(data?.error || "Unable to save center.");
       }
 
-      setCenters((existing) => [...existing, data]);
-      setForm(initialFormState);
-      setStatus("Center saved to centers.json successfully.");
+      if (mode === "edit") {
+        setCenters((existing) =>
+          existing.map((c) => (c.id === form.id ? data : c))
+        );
+        setStatus("Center updated successfully!");
+      } else {
+        setCenters((existing) => [...existing, data]);
+        setStatus("Center created successfully!");
+      }
+
+      setTimeout(() => {
+        handleCancel();
+      }, 1500);
     } catch (submitError: any) {
       setError(submitError?.message || "Failed to save center.");
     } finally {
@@ -183,106 +237,158 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground px-4 py-8 md:px-8">
+    <div className="min-h-screen bg-background text-foreground px-4 py-6 sm:px-6 md:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl space-y-8">
-        <section className="rounded-3xl border border-separator bg-backgroundPrimary p-6 shadow-sm">
-          <h1 className="text-3xl font-semibold">Manage Centers</h1>
-          <p className="mt-2 text-sm text-labelSecondary">
-            Add new centers to the JSON data file that the API reads and serves.
-          </p>
+        {/* Header */}
+        {mode === "list" && (
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold">Manage Centers</h1>
+              <p className="mt-2 text-sm text-labelSecondary">
+                Add or edit mental health centers in the network
+              </p>
+            </div>
+            <button
+              onClick={handleNewCenter}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-systemGreen px-6 py-3 font-semibold text-white hover:bg-systemGreen/90 transition sm:px-8"
+            >
+              <Plus className="w-5 h-5" />
+              <span>Add Center</span>
+            </button>
+          </div>
+        )}
 
-          <form onSubmit={handleSubmit} className="mt-6 grid gap-4 md:grid-cols-2">
-            <label className="flex flex-col gap-2 text-sm">
-              <span>Name</span>
-              <input
-                value={form.name}
-                onChange={(event) => handleChange("name", event.target.value)}
-                required
-                className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen"
-                placeholder="Center name"
-              />
-            </label>
-
-            <label className="flex flex-col gap-2 text-sm">
-              <span>Category</span>
-              <select
-                value={form.category}
-                onChange={(event) => handleChange("category", event.target.value)}
-                className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen"
+        {/* Form Section */}
+        {(mode === "create" || mode === "edit") && (
+          <div className="rounded-3xl border border-separator bg-backgroundPrimary p-6 sm:p-8 md:p-10 space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold">
+                  {mode === "create" ? "Add New Center" : "Edit Center"}
+                </h2>
+                <p className="mt-1 text-sm text-labelSecondary">
+                  {mode === "create"
+                    ? "Create a new mental health center"
+                    : "Update the center information"}
+                </p>
+              </div>
+              <button
+                onClick={handleCancel}
+                className="p-2 hover:bg-backgroundLayer1 rounded-full transition"
               >
-                {categoryOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
+                <X className="w-6 h-6 text-labelSecondary" />
+              </button>
+            </div>
 
-            <label className="flex flex-col gap-2 text-sm">
-              <span>Latitude</span>
-              <input
-                type="number"
-                step="any"
-                value={form.latitude}
-                onChange={(event) => handleChange("latitude", event.target.value)}
-                required
-                className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen"
-              />
-            </label>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Basic Info */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Basic Information</h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium">Name *</span>
+                    <input
+                      value={form.name}
+                      onChange={(event) => handleChange("name", event.target.value)}
+                      required
+                      className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen transition"
+                      placeholder="Center name"
+                    />
+                  </label>
 
-            <label className="flex flex-col gap-2 text-sm">
-              <span>Longitude</span>
-              <input
-                type="number"
-                step="any"
-                value={form.longitude}
-                onChange={(event) => handleChange("longitude", event.target.value)}
-                required
-                className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen"
-              />
-            </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium">Category *</span>
+                    <select
+                      value={form.category}
+                      onChange={(event) => handleChange("category", event.target.value)}
+                      className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen transition"
+                    >
+                      {categoryOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
 
-            <label className="flex flex-col gap-2 text-sm md:col-span-2">
-              <span>Description</span>
-              <textarea
-                value={form.description}
-                onChange={(event) => handleChange("description", event.target.value)}
-                rows={4}
-                className="rounded-3xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen"
-                placeholder="Short description of the center"
-              />
-            </label>
+                <label className="flex flex-col gap-2">
+                  <span className="text-sm font-medium">Description</span>
+                  <textarea
+                    value={form.description}
+                    onChange={(event) => handleChange("description", event.target.value)}
+                    rows={3}
+                    className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen transition resize-none"
+                    placeholder="Short description of the center"
+                  />
+                </label>
 
-            <label className="flex flex-col gap-2 text-sm">
-              <span>Open hours</span>
-              <input
-                value={form.open}
-                onChange={(event) => handleChange("open", event.target.value)}
-                className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen"
-                placeholder="e.g. Weekdays 8 AM - 5 PM"
-              />
-            </label>
+                <label className="flex flex-col gap-2">
+                  <span className="text-sm font-medium">Operating Hours</span>
+                  <input
+                    value={form.open}
+                    onChange={(event) => handleChange("open", event.target.value)}
+                    className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen transition"
+                    placeholder="e.g. Weekdays 8 AM - 5 PM"
+                  />
+                </label>
+              </div>
 
-            <div className="md:col-span-2 rounded-3xl border border-separator bg-backgroundLayer1 p-4 space-y-4">
-              <div className="text-sm font-medium">Contact information</div>
-              <div className="space-y-3">
-                <div>
-                  <div className="text-xs uppercase tracking-wide text-labelSecondary mb-2">Phones</div>
+              {/* Location */}
+              <div className="space-y-4 rounded-2xl border border-separator bg-backgroundLayer1 p-4">
+                <h3 className="text-base font-semibold flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-systemGreen" />
+                  Location
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium">Latitude *</span>
+                    <input
+                      type="number"
+                      step="any"
+                      value={form.latitude}
+                      onChange={(event) => handleChange("latitude", event.target.value)}
+                      required
+                      className="rounded-xl border border-separator bg-backgroundPrimary px-3 py-2 text-foreground outline-none focus:border-systemGreen transition"
+                    />
+                  </label>
+
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium">Longitude *</span>
+                    <input
+                      type="number"
+                      step="any"
+                      value={form.longitude}
+                      onChange={(event) => handleChange("longitude", event.target.value)}
+                      required
+                      className="rounded-xl border border-separator bg-backgroundPrimary px-3 py-2 text-foreground outline-none focus:border-systemGreen transition"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {/* Contact Information */}
+              <div className="space-y-4 rounded-2xl border border-separator bg-backgroundLayer1 p-4">
+                <h3 className="text-base font-semibold">Contact Information</h3>
+
+                {/* Phones */}
+                <div className="space-y-3">
+                  <div className="text-xs uppercase tracking-wide font-medium text-labelSecondary">Phones</div>
                   {form.phones.map((value, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <input
                         value={value}
                         onChange={(event) => updatePhone(index, event.target.value)}
-                        className="flex-1 rounded-2xl border border-separator bg-backgroundPrimary px-4 py-3 text-foreground outline-none focus:border-systemGreen"
-                        placeholder="Enter phone number"
+                        className="flex-1 rounded-xl border border-separator bg-backgroundPrimary px-3 py-2 text-foreground outline-none focus:border-systemGreen transition"
+                        placeholder="Phone number"
                       />
                       {form.phones.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removePhone(index)}
-                          className="rounded-full bg-backgroundLayer2 px-3 py-2 text-sm text-labelSecondary"
+                          className="p-2 rounded-lg hover:bg-backgroundLayer2 transition"
                         >
-                          Remove
+                          <X className="w-4 h-4 text-labelSecondary" />
                         </button>
                       )}
                     </div>
@@ -290,35 +396,36 @@ export default function Page() {
                   <button
                     type="button"
                     onClick={addPhone}
-                    className="rounded-3xl bg-backgroundLayer2 px-4 py-2 text-sm text-labelPrimary"
+                    className="text-sm font-medium text-systemGreen hover:text-systemGreen/80 transition"
                   >
                     + Add phone
                   </button>
                 </div>
 
-                <div>
-                  <div className="text-xs uppercase tracking-wide text-labelSecondary mb-2">Emails</div>
+                {/* Emails */}
+                <div className="space-y-3 border-t border-separator pt-4">
+                  <div className="text-xs uppercase tracking-wide font-medium text-labelSecondary">Emails</div>
                   {form.emails.map((entry, index) => (
-                    <div key={index} className="grid gap-2 md:grid-cols-2">
+                    <div key={index} className="grid gap-2 sm:grid-cols-2">
                       <input
                         value={entry.type}
                         onChange={(event) => updateEmail(index, "type", event.target.value)}
-                        className="rounded-2xl border border-separator bg-backgroundPrimary px-4 py-3 text-foreground outline-none focus:border-systemGreen"
+                        className="rounded-xl border border-separator bg-backgroundPrimary px-3 py-2 text-foreground outline-none focus:border-systemGreen transition"
                         placeholder="Type (e.g. customer service)"
                       />
                       <input
                         value={entry.email}
                         onChange={(event) => updateEmail(index, "email", event.target.value)}
-                        className="rounded-2xl border border-separator bg-backgroundPrimary px-4 py-3 text-foreground outline-none focus:border-systemGreen"
+                        className="rounded-xl border border-separator bg-backgroundPrimary px-3 py-2 text-foreground outline-none focus:border-systemGreen transition sm:col-span-1"
                         placeholder="Email address"
                       />
                       {form.emails.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeEmail(index)}
-                          className="rounded-full bg-backgroundLayer2 px-3 py-2 text-sm text-labelSecondary md:col-span-2"
+                          className="p-2 rounded-lg hover:bg-backgroundLayer2 transition sm:col-span-2"
                         >
-                          Remove email
+                          <X className="w-4 h-4 text-labelSecondary" />
                         </button>
                       )}
                     </div>
@@ -326,35 +433,36 @@ export default function Page() {
                   <button
                     type="button"
                     onClick={addEmail}
-                    className="rounded-3xl bg-backgroundLayer2 px-4 py-2 text-sm text-labelPrimary"
+                    className="text-sm font-medium text-systemGreen hover:text-systemGreen/80 transition"
                   >
                     + Add email
                   </button>
                 </div>
 
-                <div>
-                  <div className="text-xs uppercase tracking-wide text-labelSecondary mb-2">Other contacts</div>
+                {/* Other Contacts */}
+                <div className="space-y-3 border-t border-separator pt-4">
+                  <div className="text-xs uppercase tracking-wide font-medium text-labelSecondary">Other Contacts</div>
                   {form.otherContacts.map((entry, index) => (
-                    <div key={index} className="grid gap-2 md:grid-cols-2">
+                    <div key={index} className="grid gap-2 sm:grid-cols-2">
                       <input
                         value={entry.type}
                         onChange={(event) => updateOtherContact(index, "type", event.target.value)}
-                        className="rounded-2xl border border-separator bg-backgroundPrimary px-4 py-3 text-foreground outline-none focus:border-systemGreen"
+                        className="rounded-xl border border-separator bg-backgroundPrimary px-3 py-2 text-foreground outline-none focus:border-systemGreen transition"
                         placeholder="Type (fax, helpline, toll free)"
                       />
                       <input
                         value={entry.value}
                         onChange={(event) => updateOtherContact(index, "value", event.target.value)}
-                        className="rounded-2xl border border-separator bg-backgroundPrimary px-4 py-3 text-foreground outline-none focus:border-systemGreen"
+                        className="rounded-xl border border-separator bg-backgroundPrimary px-3 py-2 text-foreground outline-none focus:border-systemGreen transition sm:col-span-1"
                         placeholder="Contact detail"
                       />
                       {form.otherContacts.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeOtherContact(index)}
-                          className="rounded-full bg-backgroundLayer2 px-3 py-2 text-sm text-labelSecondary md:col-span-2"
+                          className="p-2 rounded-lg hover:bg-backgroundLayer2 transition sm:col-span-2"
                         >
-                          Remove contact
+                          <X className="w-4 h-4 text-labelSecondary" />
                         </button>
                       )}
                     </div>
@@ -362,72 +470,111 @@ export default function Page() {
                   <button
                     type="button"
                     onClick={addOtherContact}
-                    className="rounded-3xl bg-backgroundLayer2 px-4 py-2 text-sm text-labelPrimary"
+                    className="text-sm font-medium text-systemGreen hover:text-systemGreen/80 transition"
                   >
-                    + Add contact detail
+                    + Add contact
                   </button>
                 </div>
               </div>
-            </div>
 
-            <label className="flex flex-col gap-2 text-sm md:col-span-2">
-              <span>Services</span>
-              <textarea
-                value={form.services}
-                onChange={(event) => handleChange("services", event.target.value)}
-                rows={3}
-                className="rounded-3xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen"
-                placeholder="List services separated by commas or semicolons"
-              />
-            </label>
+              {/* Services */}
+              <label className="flex flex-col gap-2">
+                <span className="text-sm font-medium">Services</span>
+                <textarea
+                  value={form.services}
+                  onChange={(event) => handleChange("services", event.target.value)}
+                  rows={2}
+                  className="rounded-2xl border border-separator bg-backgroundLayer1 px-4 py-3 text-foreground outline-none focus:border-systemGreen transition resize-none"
+                  placeholder="List services separated by commas or semicolons"
+                />
+              </label>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="md:col-span-2 inline-flex items-center justify-center rounded-3xl bg-systemGreen px-5 py-3 text-sm font-semibold text-white transition hover:bg-systemGreen/90 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isSubmitting ? "Saving…" : "Add Center"}
-            </button>
-          </form>
-
-          {status && <div className="mt-4 rounded-3xl border border-systemGreen/30 bg-systemGreen/10 px-4 py-3 text-sm text-systemGreen">{status}</div>}
-          {error && <div className="mt-4 rounded-3xl border border-systemRed/30 bg-systemRed/10 px-4 py-3 text-sm text-systemRed">{error}</div>}
-        </section>
-
-        <section className="rounded-3xl border border-separator bg-backgroundPrimary p-6 shadow-sm">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold">Centers JSON Database</h2>
-              <p className="text-sm text-labelSecondary">The API reads from `public/data/centers.json` and new centers are saved here.</p>
-            </div>
-            <span className="inline-flex rounded-full bg-backgroundLayer2 px-3 py-1 text-xs text-labelSecondary">{centers.length} centers</span>
-          </div>
-
-          <div className="mt-6 grid gap-4">
-            {centers.map((center) => (
-              <article key={center.id} className="rounded-3xl border border-separator bg-backgroundLayer1 p-4">
-                <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                  <div>
-                    <div className="text-lg font-semibold">{center.name}</div>
-                    <div className="mt-1 text-sm text-labelSecondary">{center.category.label}</div>
-                  </div>
-
-                  <div className="text-sm text-labelSecondary">
-                    <div>{center.open ?? "No open hours"}</div>
-                    <div>{renderContactSummary(center.contact)}</div>
-                  </div>
+              {/* Messages */}
+              {status && (
+                <div className="rounded-2xl border border-systemGreen/30 bg-systemGreen/10 px-4 py-3 text-sm text-systemGreen font-medium">
+                  {status}
                 </div>
+              )}
+              {error && (
+                <div className="rounded-2xl border border-systemRed/30 bg-systemRed/10 px-4 py-3 text-sm text-systemRed font-medium">
+                  {error}
+                </div>
+              )}
 
-                <p className="mt-3 text-sm text-labelSecondary">{center.description ?? "No description provided."}</p>
-                {center.services.length > 0 && (
-                  <div className="mt-3 text-sm text-labelSecondary">
-                    <strong>Services:</strong> {center.services.join(", ")}
-                  </div>
-                )}
-              </article>
-            ))}
+              {/* Actions */}
+              <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end pt-4 border-t border-separator">
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="px-6 py-3 text-foreground font-semibold rounded-full border border-separator hover:bg-backgroundLayer1 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-6 py-3 bg-systemGreen text-white font-semibold rounded-full hover:bg-systemGreen/90 disabled:opacity-50 transition"
+                >
+                  {isSubmitting ? "Saving..." : mode === "create" ? "Create Center" : "Update Center"}
+                </button>
+              </div>
+            </form>
           </div>
-        </section>
+        )}
+
+        {/* Centers List */}
+        {mode === "list" && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">
+                {centers.length} {centers.length === 1 ? "Center" : "Centers"}
+              </h2>
+            </div>
+
+            {centers.length === 0 ? (
+              <div className="rounded-3xl border border-separator bg-backgroundLayer1 p-8 sm:p-12 text-center">
+                <p className="text-labelSecondary mb-6">No centers yet. Create one to get started.</p>
+                <button
+                  onClick={handleNewCenter}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-systemGreen px-8 py-3 font-semibold text-white hover:bg-systemGreen/90 transition"
+                >
+                  <Plus className="w-5 h-5" />
+                  <span>Create First Center</span>
+                </button>
+              </div>
+            ) : (
+              <div className="grid gap-3 sm:gap-4">
+                {centers.map((center) => (
+                  <div
+                    key={center.id}
+                    className="rounded-2xl border border-separator bg-backgroundPrimary p-4 sm:p-6 hover:bg-backgroundLayer1 transition group"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg sm:text-xl font-semibold text-foreground truncate">
+                          {center.name}
+                        </h3>
+                        <p className="text-sm text-labelSecondary mt-1">{center.category.label}</p>
+                        <p className="text-xs text-labelSecondary mt-3 line-clamp-2">
+                          {center.description || "No description"}
+                        </p>
+                        <p className="text-xs text-labelSecondary mt-2">
+                          {renderContactSummary(center.contact)}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleEditCenter(center)}
+                        className="p-2 sm:p-3 rounded-full bg-backgroundLayer1 text-systemGreen hover:bg-systemGreen/10 transition flex-shrink-0"
+                      >
+                        <Edit className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
