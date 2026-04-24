@@ -1,251 +1,219 @@
 "use client";
 
-import Map, { NavigationControl, GeolocateControl, Marker, Source, Layer } from "react-map-gl/mapbox";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useState } from "react";
-import { Bell, Building, Cog, House } from "lucide-react";
+import Link from "next/link";
+import { MapPin, Users, HeartHandshake, ArrowRight, Menu, X } from "lucide-react";
+import { useState } from "react";
 
-import SidebarButton from "@/components/sidebarbutton";
-import { Category, Center, counselingCenter, otherFacility, rehabCenter } from "@/utils/center";
-import MapFloatingCard from "@/components/MapFloatingCard";
-import { getIconByCategoryId } from "@/utils/helpers";
-import { useCenters } from "@/context/centers-context";
-import CenterDetailsPanel from "@/components/CenterDetailsPanel";
-import CenterDetailsDrawer from "@/components/CenterDetailsDrawer";
-import CentersPage from "@/components/centerspage";
-import UpdatesPage from "@/components/updatespage";
-import SettingsPage from "@/components/settingspage";
+export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-export default function Home() {
-
-  const { selectedCenter, setSelectedCenter } = useCenters();
-
-  const [active, setActive] = useState("home");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isLoadingDirections, setIsLoadingDirections] = useState<boolean>(false);
-
-  const options: Category[] = [
-    { label: "All", id: -1, icon: House, color: "systemGreen" },
-    rehabCenter,
-    counselingCenter,
-    otherFacility,
+  const navLinks = [
+    { label: "Features", href: "#features" },
+    { label: "Get Started", href: "#cta" },
+    { label: "Explore App", href: "/app" },
   ];
-  const [selectedOption, setSelectedOption] = useState(options[0]);
-
-  const [centers, setCenters] = useState<Center[]>([]);
-  useEffect((): void => {
-    fetch("/api/centers")
-      .then((res) => res.json())
-      .then((data) => setCenters(Array.isArray(data) ? data : []))
-      .catch(console.error);
-  }, []);
-
-  const [styleUrl, setStyleUrl] = useState("mapbox://styles/mapbox/streets-v12");
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const updateMap = () =>
-      setStyleUrl(media.matches
-        ? "mapbox://styles/mapbox/dark-v11"
-        : "mapbox://styles/mapbox/streets-v12");
-
-    updateMap();
-    media.addEventListener("change", updateMap);
-    return () => media.removeEventListener("change", updateMap);
-  }, []);
-
-  const [route, setRoute] = useState<any>(null);
-  async function getDirections(center: Center): Promise<void> {
-    console.log('starteds')
-    setIsLoadingDirections(true);
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const start = `${pos.coords.longitude},${pos.coords.latitude}`;
-        const end = `${center.cordinates.longitude},${center.cordinates.latitude}`;
-
-        try {
-          fetch(
-            `https://api.mapbox.com/directions/v5/mapbox/driving/${start};${end}?geometries=geojson&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`
-          )
-            .then(res => res.json())
-            .then(data => {
-              setRoute(data.routes[0].geometry);
-              setIsLoadingDirections(false);
-            });
-        } catch (error) {
-          console.log(error);
-          setIsLoadingDirections(false);
-        }
-      }
-    );
-  }
-
-  const closeCenterDetails = (): void => { setSelectedCenter(null); setIsLoadingDirections(false); }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-background font-sans text-foreground flex flex-col">
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Navigation Bar */}
+      <nav className="sticky top-0 z-50 border-b border-separator bg-background/95 backdrop-blur-sm">
+        <div className="mx-auto max-w-6xl px-6 md:px-12">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-systemGreen flex items-center justify-center">
+                <span className="text-white font-bold text-sm">M</span>
+              </div>
+              <span className="font-bold text-lg">MindAccess</span>
+            </Link>
 
-      {/* Top floating filter */}
-      {active === "home" && <div className="fixed top-4 left-1/2 md:left-2/3 -translate-x-1/2 z-30 w-[60%] md:w-[30%] max-w-xl cursor-pointer flex-1">
-        <div className="rounded-full bg-backgroundPrimary border border-separator shadow-lg backdrop-blur-sm px-4 py-3"
-          onClick={() => setIsOpen(!isOpen)}>
-          <div className="flex justify-between items-center">
-            <span>{selectedOption?.label ?? "All"}</span>
-            <svg className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" > <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /> </svg>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm font-medium hover:text-systemGreen transition"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Desktop CTA Button */}
+            <div className="hidden md:flex">
+              <Link
+                href="/app"
+                className="inline-flex items-center justify-center rounded-2xl bg-systemGreen px-6 py-2 text-sm font-semibold text-white hover:bg-systemGreen/90 transition"
+              >
+                Launch App
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 hover:bg-backgroundLayer1 rounded-lg transition"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
 
-          {isOpen && (
-            <div className="absolute w-full top-full left-0 mt-2 bg-backgroundPrimary border border-separator rounded-xl shadow-xl backdrop-blur-sm overflow-hidden p-1">
-              {options.map((option) => (
-                <div key={option.id}
-                  className="px-4 py-2 flex items-center gap-3 hover:bg-backgroundLayer1 rounded-xl cursor-pointer"
-                  onClick={() => {
-                    setSelectedOption(option);
-                    setIsOpen(false);
-                  }}>
-                  <option.icon style={{ color: `var(--${option.color})` }} className="w-5 h-5" />
-                  <span className="text-sm font-small">{option.label}</span>
-                </div>
+          {/* Mobile Navigation Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-separator py-4 space-y-3">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="block px-4 py-2 text-sm font-medium hover:bg-backgroundLayer1 rounded-lg transition"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
               ))}
+              <Link
+                href="/app"
+                className="block px-4 py-2 bg-systemGreen text-white text-sm font-semibold rounded-lg hover:bg-systemGreen/90 transition text-center"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Launch App
+              </Link>
             </div>
           )}
         </div>
-      </div>}
+      </nav>
 
-
-      {/* Whole page flex layout (DESKTOP) */}
-      <div className="flex flex-row h-full w-full">
-
-        {/* Desktop Sidebar */}
-        <aside className="hidden md:flex flex-col items-center w-20 lg:w-64 border-r border-separator bg-sidebar/95 backdrop-blur-sm p-3 lg:p-6 transition-all duration-300">
-          <span className="hidden lg:flex text-3xl font-bold mb-6">MindAccess</span>
-
-          <SidebarButton icon={House} label="Home" isActive={active === "home"} onClick={() => setActive("home")} />
-          <SidebarButton icon={Building} label="Centers" isActive={active === "centers"} onClick={() => setActive("centers")} />
-          <SidebarButton icon={Bell} label="Updates" isActive={active === "updates"} onClick={() => setActive("updates")} />
-          <SidebarButton icon={Cog} label="Settings" isActive={active === "settings"} onClick={() => setActive("settings")} />
-        </aside>
-
-        {/* Desktop Side Details Panel — appears tight beside sidebar */}
-        {selectedCenter && active === "home" && (
-          <div className="hidden md:flex w-[360px] border-r border-separator bg-backgroundLayer1 backdrop-blur-xl animate-slide-in">
-            <CenterDetailsPanel center={selectedCenter} onClose={closeCenterDetails} getDirections={() => { getDirections(selectedCenter) }} isLoadingDirections={isLoadingDirections} />
-          </div>
-        )}
-
-        {/* Map — fills remaining space */}
-        <div className="relative flex-grow w-full">
-          {active === "home" && <Map
-            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-            initialViewState={{ longitude: 32.5458, latitude: 0.3016, zoom: 10 }}
-            mapStyle={styleUrl}
-            style={{ width: "100%", height: "100%", flex: "2" }}
-            attributionControl={false}
-          >
-            <NavigationControl position="top-right"  style={{
-              background:`var(--backdrop)`,
-              borderRadius: '20px',
-               borderColor: "var(--separator)",
-               marginTop: '40px'
-             }}/>
-
-
-            <GeolocateControl positionOptions={{ enableHighAccuracy: true }} trackUserLocation={true} showUserHeading={true}
-             style={{
-              background:`var(--backdrop)`,
-              borderRadius: '20px'
-             }}/>
-
-
-            {centers
-              .filter(center =>
-                selectedOption.id === -1 || selectedOption.id === center.category.id
-              )
-              .map((center) => {
-                const IconComponent = getIconByCategoryId(center.category.id);
-                return (
-                  <Marker key={center.id}
-                    longitude={center.cordinates.longitude}
-                    latitude={center.cordinates.latitude}
-                    onClick={(e) => {
-                      e.originalEvent.stopPropagation();
-                      if (active === "home") setSelectedCenter(center);
-                    }}>
-                    <div className="group flex flex-col items-center space-y-1">
-                      <IconComponent className="w-5 h-5" style={{ color: `var(--${center.category.color})` }} />
-                      <div className="hidden md:block text-xs">{center.name}</div>
-                    </div>
-                  </Marker>
-                );
-              })}
-
-            {route && (
-              <Source id="route" type="geojson" data={{ type: "Feature", properties: {}, geometry: route }}>
-                <Layer
-                  id="route-line"
-                  type="line"
-                  paint={{
-                    "line-width": 4,
-                    "line-color": "#1E90FF", // automatically adjusts in dark mode
-                    "line-opacity": 0.9,
-                  }}
-                />
-              </Source>
-            )}
-
-            {/* Floating small popup on map (desktop only) */}
-            {selectedCenter && (
-              <Marker
-                longitude={selectedCenter.cordinates.longitude}
-                latitude={selectedCenter.cordinates.latitude}
-                anchor="top"
+      {/* Hero Section */}
+      <section className="relative overflow-hidden px-4 sm:px-6 py-16 sm:py-20 md:px-12 md:py-32">
+        <div className="mx-auto max-w-4xl">
+          <div className="space-y-6">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-tight">
+              Find Support <span className="text-systemGreen">Centers Near You</span>
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl text-labelSecondary max-w-2xl">
+              Access mental health and rehabilitation services across Uganda. Discover counseling centers, rehabilitation facilities, and support services tailored to your needs.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
+              <Link
+                href="/app"
+                className="inline-flex items-center justify-center gap-2 rounded-3xl bg-systemGreen px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white hover:bg-systemGreen/90 transition"
               >
-                <MapFloatingCard center={selectedCenter} onClose={() => setSelectedCenter(null)} />
-              </Marker>
-            )}
-          </Map>}
-
-          {active === "centers" && (<CentersPage centers={centers} />)}
-          {active === "updates" && (<UpdatesPage />)}
-          {active === "settings" && (<SettingsPage />)}
-        </div>
-      </div>
-
-
-      {/* Mobile Drawer (kept exactly as before) */}
-
-
-
-      {/* Mobile Bottom Nav (no change) */}
-      <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] max-w-md z-30">
-
-        <div className="bg-backdrop backdrop-blur-xl rounded-3xl shadow-2xl border border-separator">
-          {selectedCenter && active === "home" && (
-            <CenterDetailsDrawer center={selectedCenter} onClose={closeCenterDetails} getDirections={() => { getDirections(selectedCenter) }} isLoadingDirections={isLoadingDirections} />
-          )}
-          <div className="flex items-center justify-around px-1 py-1 gap-1">
-
-            <button onClick={() => setActive("home")}
-              className={`flex flex-col items-center flex-1 rounded-full p-1 ${active === "home" ? "bg-systemGreen text-white" : ""}`}>
-              <House className="w-6 h-6" /><span className="text-xs font-medium">Home</span>
-            </button>
-
-            <button onClick={() => setActive("centers")}
-              className={`flex flex-col items-center flex-1 rounded-full p-1 ${active === "centers" ? "bg-systemGreen text-white" : ""}`}>
-              <Building className="w-6 h-6" /><span className="text-xs font-medium">Centers</span>
-            </button>
-
-            <button onClick={() => setActive("updates")}
-              className={`flex flex-col items-center flex-1 rounded-full p-1 ${active === "updates" ? "bg-systemGreen text-white" : ""}`}>
-              <Bell className="w-6 h-6" /><span className="text-xs font-medium">Updates</span>
-            </button>
-
-            <button onClick={() => setActive("settings")}
-              className={`flex flex-col items-center flex-1 rounded-full p-1 ${active === "settings" ? "bg-systemGreen text-white" : ""}`}>
-              <Cog className="w-6 h-6" /><span className="text-xs font-medium">Settings</span>
-            </button>
+                Explore Centers <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                href="/app/data"
+                className="inline-flex items-center justify-center gap-2 rounded-3xl border border-separator bg-backgroundPrimary px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold hover:bg-backgroundLayer1 transition"
+              >
+                Add a Center
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section id="features" className="px-4 sm:px-6 py-16 sm:py-20 md:px-12 md:py-32 bg-backgroundLayer1">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 sm:mb-16 text-center">Why MindAccess?</h2>
+          
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+            {/* Feature 1 */}
+            <div className="rounded-2xl sm:rounded-3xl border border-separator bg-backgroundPrimary p-6 sm:p-8 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-systemGreen/10 flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-systemGreen" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold">Find Nearby Services</h3>
+              <p className="text-sm sm:text-base text-labelSecondary">
+                Discover rehabilitation centers, counseling services, and mental health facilities near your location with real-time map integration.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="rounded-2xl sm:rounded-3xl border border-separator bg-backgroundPrimary p-6 sm:p-8 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-systemGreen/10 flex items-center justify-center">
+                <Users className="w-6 h-6 text-systemGreen" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold">Multiple Service Types</h3>
+              <p className="text-sm sm:text-base text-labelSecondary">
+                Browse rehabilitation centers, counseling centers, and other mental health facilities all in one comprehensive directory.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="rounded-2xl sm:rounded-3xl border border-separator bg-backgroundPrimary p-6 sm:p-8 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-systemGreen/10 flex items-center justify-center">
+                <HeartHandshake className="w-6 h-6 text-systemGreen" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold">Complete Information</h3>
+              <p className="text-sm sm:text-base text-labelSecondary">
+                Access detailed contact information, operating hours, services offered, and directions to each facility.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section id="cta" className="px-4 sm:px-6 py-16 sm:py-20 md:px-12 md:py-32">
+        <div className="mx-auto max-w-4xl rounded-2xl sm:rounded-3xl border border-separator bg-backgroundPrimary p-8 sm:p-12 text-center space-y-6">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold">Ready to Start?</h2>
+          <p className="text-base sm:text-lg text-labelSecondary max-w-2xl mx-auto">
+            Whether you're looking for support or want to contribute by adding a new center, we're here to help.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4">
+            <Link
+              href="/app"
+              className="inline-flex items-center justify-center gap-2 rounded-3xl bg-systemGreen px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white hover:bg-systemGreen/90 transition"
+            >
+              Browse Centers
+            </Link>
+            <Link
+              href="/app/data"
+              className="inline-flex items-center justify-center gap-2 rounded-3xl border border-separator bg-backgroundLayer1 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold hover:bg-backgroundLayer2 transition"
+            >
+              List Your Center
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-backgroundLayer1 border-t border-separator px-4 sm:px-6 py-12 md:px-12">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+            <div className="space-y-4">
+              <h3 className="font-bold text-lg">MindAccess</h3>
+              <p className="text-sm text-labelSecondary">
+                Connecting people with mental health and rehabilitation services.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-base">App</h4>
+              <ul className="space-y-2 text-sm text-labelSecondary">
+                <li><Link href="/app" className="hover:text-foreground transition">Browse Centers</Link></li>
+                <li><Link href="/app/data" className="hover:text-foreground transition">Add Center</Link></li>
+              </ul>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-base">Information</h4>
+              <ul className="space-y-2 text-sm text-labelSecondary">
+                <li><Link href="/api/about" className="hover:text-foreground transition">About</Link></li>
+                <li><Link href="/api/help" className="hover:text-foreground transition">Help</Link></li>
+              </ul>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-base">Legal</h4>
+              <ul className="space-y-2 text-sm text-labelSecondary">
+                <li><Link href="/api/terms" className="hover:text-foreground transition">Terms</Link></li>
+                <li><Link href="/api/faq" className="hover:text-foreground transition">FAQ</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-8 border-t border-separator text-center text-sm text-labelSecondary">
+            <p>&copy; 2026 MindAccess. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
