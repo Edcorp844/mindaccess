@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Users, HeartHandshake, ArrowRight, Menu, X, Shield, Zap, Globe, Smartphone } from "lucide-react";
 import { FaGooglePlay } from "react-icons/fa6";
@@ -24,8 +25,8 @@ export default function LandingPage() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const heroImages = [
-    "/images/Screenshot%202026-04-24%20at%2017.16.14.png",
-    "/images/Screenshot%202026-04-24%20at%2017.17.30.png"
+    "/images/Screenshot 2026-04-24 at 17.16.14.png",
+    "/images/Screenshot 2026-04-24 at 17.17.30.png",
   ];
 
   useEffect(() => {
@@ -160,10 +161,8 @@ export default function LandingPage() {
 
               <div className="flex items-center gap-6 pt-10 border-t border-separator/30">
                 <div className="flex -space-x-3">
-                  {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-systemGreen/50 bg-backgroundLayer1 overflow-hidden">
-                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 124}`} alt="User" />
-                    </div>
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-systemGreen/50 bg-systemGreen/10" />
                   ))}
                 </div>
                 <div className="text-sm font-medium text-labelSecondary">
@@ -181,18 +180,17 @@ export default function LandingPage() {
               {/* Centered Image & Overlay Container */}
               <div className="relative h-full w-full flex items-center justify-center">
                 <div className="relative w-full h-full flex items-center justify-center scale-110 lg:scale-125">
-                  {/* Slider Images (Base Layer) */}
-                  {heroImages.map((src, index) => (
-                    <img
-                      key={src}
-                      src={src}
-                      alt={`App view ${index}`}
-                      className={`absolute inset-0 w-full h-full object-contain transition-all duration-1000 ease-in-out drop-shadow-2xl ${index === currentImageIndex
-                        ? "opacity-100 z-10"
-                        : "opacity-0 z-0"
-                        }`}
+                  <div className="absolute inset-0">
+                    <Image
+                      src={heroImages[currentImageIndex]}
+                      alt={`App view ${currentImageIndex + 1}`}
+                      fill
+                      className="object-contain drop-shadow-2xl"
+                      quality={75}
+                      sizes="(max-width: 1023px) 100vw, 50vw"
+                      priority
                     />
-                  ))}
+                  </div>
 
                   {/* Navigation Dots (On top of images) */}
                   <div className="absolute bottom-[30%] right-[10%] z-20">
@@ -250,10 +248,13 @@ export default function LandingPage() {
 
               {/* Tablet View */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] transition-all duration-700 hover:scale-105 z-20">
-                <img
-                  src="/images/ScreenshotTab1.png"
+                <Image
+                  src="/images/screenshotTab1.png"
                   alt="MindAccess Tablet Interface"
+                  width={1000}
+                  height={700}
                   className="w-full h-auto"
+                  quality={70}
                 />
               </div>
 
@@ -261,10 +262,13 @@ export default function LandingPage() {
 
               {/* Mobile View 2 (Foreground Right - Pushed Further) */}
               <div className="absolute top-[35%] right-[-5%] md:right-[-15%] -translate-y-1/2 w-[160px] md:w-[240px] z-30 animate-float-delayed">
-                <img
+                <Image
                   src="/images/ScreenshotMobile0.png"
                   alt="MindAccess Mobile App 2"
+                  width={240}
+                  height={500}
                   className="w-full h-auto"
+                  quality={70}
                 />
               </div>
             </div>
