@@ -29,8 +29,8 @@ type FormState = {
 };
 
 const categoryOptions = [
-  { value: "Rehabilitaion Centre", label: "Rehabilitation Centre" },
-  { value: "Counseling Center", label: "Counseling Center" },
+  { value: "Rehabilitaion Center", label: "Rehabilitation Center" },
+  { value: "Counselling Center", label: "Counselling Center" },
   { value: "Other Facility", label: "Other Facility" },
 ];
 
@@ -170,7 +170,7 @@ export default function Page() {
     setForm({
       id: center.id,
       name: center.name,
-      category: center.category.value,
+      category: center.category.label,
       latitude: center.cordinates.latitude.toString(),
       longitude: center.cordinates.longitude.toString(),
       description: center.description || "",
