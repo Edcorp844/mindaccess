@@ -37,10 +37,11 @@ export default function OverviewTab() {
         const allCenters = centersSnap.docs.map(doc => {
           const data = doc.data() as FirestoreCenter;
           return {
-            ...data,
+            name: data.name,
+            category: data.category,
             id: doc.id,
             createdAt: (data.createdAt as any)?.toDate?.() || new Date()
-          };
+          } as { name: string; category: string; id: string; createdAt: Date };
         });
 
         // 3. Totals
