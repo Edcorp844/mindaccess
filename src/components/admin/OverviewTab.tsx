@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import { collection, getDocs, query, orderBy, limit, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
-import { getCentersByCategory } from "@/lib/firebase/centersService";
+import { getCentersByCategory, FirestoreCenter } from "@/lib/firebase/centersService";
 import { Building2, Users as UsersIcon, PlusCircle, Activity } from "lucide-react";
 
 interface CenterListItem {
@@ -34,11 +34,14 @@ export default function OverviewTab() {
 
         // 2. Fetch all centers for timeline and totals
         const centersSnap = await getDocs(query(collection(db, "Centers"), orderBy("createdAt", "desc")));
-        const allCenters = centersSnap.docs.map(doc => ({
-          ...doc.data(),
-          id: doc.id,
-          createdAt: doc.data().createdAt?.toDate() || new Date()
-        }));
+        const allCenters = centersSnap.docs.map(doc => {
+          const data = doc.data() as FirestoreCenter;
+          return {
+            ...data,
+            id: doc.id,
+            createdAt: (data.createdAt as any)?.toDate?.() || new Date()
+          };
+        });
 
         // 3. Totals
         const now = new Date();
@@ -97,7 +100,7 @@ export default function OverviewTab() {
     <div className="space-y-10 animate-slide-in pb-20">
       <header>
         <h1 className="text-4xl font-black tracking-tight mb-2">Dashboard</h1>
-        <p className="text-labelSecondary font-medium">Welcome back, Admin. Here's what's happening today.</p>
+        <p className="text-labelSecondary font-medium">Welcome back, Admin. Here&apos;s what&apos;s happening today.</p>
       </header>
 
       {/* Summary Widgets */}
@@ -240,7 +243,7 @@ export default function OverviewTab() {
   );
 }
 
-function SummaryCard({ title, value, icon: Icon, color, trend }: any) {
+function SummaryCard({ title, value, icon: Icon, color, trend }: { title: string; value: string | number; icon: any; color: string; trend: string }) {
   return (
     <div className="bg-backgroundLayer1/50 backdrop-blur-xl border border-separator rounded-3xl p-6 shadow-xl relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
       <div className={`absolute -right-4 -top-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity`}>

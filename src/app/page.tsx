@@ -8,6 +8,7 @@ import { SiApple } from "react-icons/si";
 import { useState, useEffect } from "react";
 import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "@/context/auth-context";
+import { RiFacebookLine } from "react-icons/ri";
 
 export default function LandingPage() {
   const { profile } = useAuth();
@@ -290,7 +291,7 @@ export default function LandingPage() {
                 <span className="gradient-text">every screen.</span>
               </h2>
               <p className="text-xl text-labelSecondary leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
-                Whether you're on a phone, tablet, or desktop, MindAccess provides a seamless, high-performance experience. Our native Android app brings the power of precision mapping to your fingertips.
+                Whether you&apos;re on a phone, tablet, or desktop, MindAccess provides a seamless, high-performance experience. Our native Android app brings the power of precision mapping to your fingertips.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center gap-8 justify-center lg:justify-start pt-4">
@@ -457,7 +458,7 @@ export default function LandingPage() {
                 <span className="font-black text-2xl tracking-tighter">MindAccess</span>
               </Link>
               <p className="text-labelSecondary leading-relaxed">
-                Building the digital bridge between those who need help and those who provide it. Uganda's official mental health directory.
+                Building the digital bridge between those who need help and those who provide it. Uganda&apos;s official mental health directory.
               </p>
             </div>
             <div>
@@ -483,7 +484,7 @@ export default function LandingPage() {
                 {[
                   {
                     "link": "facebook.com/mindaccessug",
-                    "icon": <Facebook className="w-6 h-6" />
+                    "icon": <RiFacebookLine className="w-6 h-6" />
                   },
                   {
                     "link": "x.com/mindaccessug",
