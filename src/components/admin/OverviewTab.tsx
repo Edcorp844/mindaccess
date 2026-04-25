@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { 
-  PieChart, Pie, Cell, ResponsiveContainer, Tooltip, 
+import {
+  PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Legend
 } from "recharts";
 import { collection, getDocs, query, orderBy, limit, Timestamp } from "firebase/firestore";
@@ -71,7 +71,7 @@ export default function OverviewTab() {
 
         // 6. Users Count
         const usersSnap = await getDocs(collection(db, "users"));
-        
+
         setTotals({
           centers: allCenters.length,
           users: usersSnap.size,
@@ -106,33 +106,33 @@ export default function OverviewTab() {
 
       {/* Summary Widgets */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <SummaryCard 
-          title="Total Centers" 
-          value={totals.centers} 
-          icon={Building2} 
-          color="systemGreen" 
-          trend="+5%" 
+        <SummaryCard
+          title="Total Centers"
+          value={totals.centers}
+          icon={Building2}
+          color="systemGreen"
+          trend="+5%"
         />
-        <SummaryCard 
-          title="Total Users" 
-          value={totals.users} 
-          icon={UsersIcon} 
-          color="systemBlue" 
-          trend="+12%" 
+        <SummaryCard
+          title="Total Users"
+          value={totals.users}
+          icon={UsersIcon}
+          color="systemBlue"
+          trend="+12%"
         />
-        <SummaryCard 
-          title="New This Week" 
-          value={totals.newThisWeek} 
-          icon={PlusCircle} 
-          color="systemPurple" 
-          trend="New" 
+        <SummaryCard
+          title="New This Week"
+          value={totals.newThisWeek}
+          icon={PlusCircle}
+          color="systemPurple"
+          trend="New"
         />
-        <SummaryCard 
-          title="System Health" 
-          value="Optimal" 
-          icon={Activity} 
-          color="systemRed" 
-          trend="100%" 
+        <SummaryCard
+          title="System Health"
+          value="Optimal"
+          icon={Activity}
+          color="systemRed"
+          trend="100%"
         />
       </div>
 
@@ -152,14 +152,14 @@ export default function OverviewTab() {
                 <AreaChart data={timelineData}>
                   <defs>
                     <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#32d158" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#32d158" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#32d158" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#32d158" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--separator)" vertical={false} opacity={0.5} />
                   <XAxis dataKey="date" stroke="var(--labelSecondary)" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="var(--labelSecondary)" fontSize={12} tickLine={false} axisLine={false} />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ backgroundColor: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(10px)', border: '1px solid var(--separator)', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
                   />
                   <Area type="monotone" dataKey="count" stroke="#32d158" strokeWidth={4} fillOpacity={1} fill="url(#colorCount)" />
@@ -187,8 +187,8 @@ export default function OverviewTab() {
                     <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
                   ))}
                 </Pie>
-                <Tooltip 
-                   contentStyle={{ backgroundColor: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(10px)', border: '1px solid var(--separator)', borderRadius: '15px' }}
+                <Tooltip
+                  contentStyle={{ backgroundColor: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(10px)', border: '1px solid var(--separator)', borderRadius: '15px' }}
                 />
                 <Legend layout="vertical" verticalAlign="bottom" align="center" iconType="circle" />
               </PieChart>

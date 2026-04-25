@@ -53,14 +53,15 @@ export default function LandingPage() {
       </div>
 
       {/* Navigation Bar */}
-      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b ${scrolled
-        ? "py-3 bg-background/70 backdrop-blur-xl border-separator/50 shadow-sm"
-        : "py-6 bg-transparent border-transparent"
+      <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b ${
+        scrolled
+          ? "py-3 bg-background md:bg-background/70 md:backdrop-blur-xl border-separator/50 shadow-sm"
+          : "py-6 bg-background md:bg-transparent border-transparent md:border-transparent"
         }`}>
         <div className="mx-auto max-w-7xl px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-background/70 backdrop-blur-xl border border-separator flex items-center justify-center shadow-[0_0_20px_rgba(3,161,14,0.2)] dark:shadow-[0_0_30px_rgba(3,161,14,0.15)] group-hover:scale-110 group-hover:shadow-[0_0_35px_rgba(3,161,14,0.4)] transition-all duration-300 p-2">
+            <div className="w-10 h-10 rounded-xl bg-background md:bg-background/70 md:backdrop-blur-xl border border-separator flex items-center justify-center shadow-[0_0_20px_rgba(3,161,14,0.2)] dark:shadow-[0_0_30px_rgba(3,161,14,0.15)] group-hover:scale-110 group-hover:shadow-[0_0_35px_rgba(3,161,14,0.4)] transition-all duration-300 p-2">
               <svg
                 viewBox="0 0 490.1 490.1"
                 className="w-full h-full fill-current"
@@ -101,7 +102,7 @@ export default function LandingPage() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 glass rounded-xl transition"
+            className="md:hidden p-2 bg-background border border-separator rounded-xl transition"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -109,37 +110,63 @@ export default function LandingPage() {
 
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 top-[72px] bg-background/95 backdrop-blur-2xl z-40 p-6 flex flex-col gap-6 animate-slide-up">
+          <div className="md:hidden fixed inset-0 top-[72px] bg-background z-40 p-6 flex flex-col gap-6 animate-slide-up">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-2xl font-bold border-b border-separator/30 pb-4"
+                className="text-2xl font-black border-b border-separator/30 pb-4"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/app"
-              className="mt-4 w-full py-5 bg-systemGreen text-white text-center text-xl font-bold rounded-2xl shadow-xl shadow-systemGreen/20"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Launch Directory
-            </Link>
-            <Link
-              href="/login"
-              className="w-full py-4 border border-separator/50 text-center text-lg font-bold rounded-2xl"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Sign In
-            </Link>
+            
+            <div className="mt-auto space-y-4 pb-12">
+              {profile ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 p-4 rounded-3xl bg-backgroundLayer1 border border-separator/50">
+                    <div className="w-12 h-12 rounded-full bg-systemGreen/10 flex items-center justify-center text-systemGreen font-black">
+                       {profile.displayName?.split(" ").map(n => n[0]).join("").toUpperCase().slice(0,2) || "U"}
+                    </div>
+                    <div>
+                      <p className="font-black">{profile.displayName || "User"}</p>
+                      <p className="text-xs text-labelSecondary">{profile.email}</p>
+                    </div>
+                  </div>
+                  <Link
+                    href="/app"
+                    className="flex items-center justify-center gap-3 w-full py-5 bg-systemGreen text-white text-xl font-black rounded-[2rem] shadow-xl shadow-systemGreen/20"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Go to App
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <Link
+                    href="/app"
+                    className="flex items-center justify-center gap-3 w-full py-5 bg-systemGreen text-white text-xl font-black rounded-[2rem] shadow-xl shadow-systemGreen/20"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Launch Directory
+                  </Link>
+                  <Link
+                    href="/login"
+                    className="flex items-center justify-center w-full py-5 border-2 border-separator text-lg font-black rounded-[2rem]"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         )}
       </nav>
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-40 pb-20 px-6 md:px-12">
+      <section className="relative z-10 pt-40 pb-20 px-6 md:px-12 overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-10">
@@ -192,7 +219,7 @@ export default function LandingPage() {
                       src={heroImages[currentImageIndex]}
                       alt={`App view ${currentImageIndex + 1}`}
                       fill
-                      className="object-contain drop-shadow-2xl"
+                      className="object-contain drop-shadow-2xl transition-opacity duration-1000 will-change-transform"
                       quality={75}
                       sizes="(max-width: 1023px) 100vw, 50vw"
                       priority
@@ -260,7 +287,7 @@ export default function LandingPage() {
                   alt="MindAccess Tablet Interface"
                   width={1000}
                   height={700}
-                  className="w-full h-auto"
+                  className="w-full h-auto will-change-transform"
                   quality={70}
                 />
               </div>
@@ -274,7 +301,7 @@ export default function LandingPage() {
                   alt="MindAccess Mobile App 2"
                   width={240}
                   height={500}
-                  className="w-full h-auto"
+                  className="w-full h-auto will-change-transform"
                   quality={70}
                 />
               </div>

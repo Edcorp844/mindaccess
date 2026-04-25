@@ -169,7 +169,7 @@ export default function Home() {
             )}
           </div>
 
-          <SidebarButton icon={Cog} label="Settings" isActive={active === "settings"} onClick={() => setActive("settings")} />
+          <SidebarButton icon={User} label="Account" isActive={active === "account"} onClick={() => setActive("account")} />
 
           {/* Spacer pushes account to bottom */}
           <div className="flex-1" />
@@ -305,7 +305,29 @@ export default function Home() {
 
           {active === "centers" && (<CentersPage centers={centers} />)}
           {active === "updates" && (<UpdatesPage />)}
-          {active === "settings" && (<SettingsPage />)}
+          {active === "account" && (
+            <div className="h-full w-full bg-background flex flex-col items-center justify-center p-6 text-center animate-slide-up">
+               <div className="w-24 h-24 rounded-full bg-systemGreen/10 border-4 border-systemGreen/30 flex items-center justify-center mb-6 shadow-2xl shadow-systemGreen/20">
+                {user?.photoURL ? (
+                  <img src={user.photoURL} alt="User" className="w-full h-full rounded-full object-cover" />
+                ) : (
+                  <User className="w-12 h-12 text-systemGreen" />
+                )}
+              </div>
+              <h2 className="text-3xl font-black mb-2">{user?.displayName ?? "User Account"}</h2>
+              <p className="text-labelSecondary mb-8 font-medium">{user?.email}</p>
+              
+              <div className="w-full max-w-sm space-y-3">
+                <button 
+                  onClick={async () => { await logOut(); router.replace("/"); }}
+                  className="w-full py-4 bg-systemRed/10 text-systemRed rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-systemRed/20 transition-all"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Sign Out of MindAccess
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -344,9 +366,9 @@ export default function Home() {
               <span className="text-xs font-medium">Updates</span>
             </button>
 
-            <button onClick={() => setActive("settings")}
-              className={`flex flex-col items-center flex-1 rounded-full p-1 ${active === "settings" ? "bg-systemGreen text-white" : ""}`}>
-              <Cog className="w-6 h-6" /><span className="text-xs font-medium">Settings</span>
+            <button onClick={() => setActive("account")}
+              className={`flex flex-col items-center flex-1 rounded-full p-1 ${active === "account" ? "bg-systemGreen text-white" : ""}`}>
+              <User className="w-6 h-6" /><span className="text-xs font-medium">Account</span>
             </button>
           </div>
         </div>
