@@ -1,27 +1,38 @@
-import { Category, Center, counselingCenter, otherFacility, rehabCenter } from "./center";
-import { Building2, Hospital, LucideIcon, Sofa } from "lucide-react";
+import { Category, Center, rehabilitation, hospital, counselling, tollFree, safeSpace, otherCenter } from "./center";
+import { Building2, Hospital, LucideIcon, Sofa, PhoneCall, Shield } from "lucide-react";
 
 export function categoryFromString(label: string): Category {
     const title = label?.trim()?.toLowerCase();
 
     if (title.includes("rehabil")) {
-        return rehabCenter;
-    }
-    else if (title.includes("counsel")) {
-        return counselingCenter;
+        return rehabilitation;
+    } else if (title.includes("hospital")) {
+        return hospital;
+    } else if (title.includes("counsel")) {
+        return counselling;
+    } else if (title.includes("toll")) {
+        return tollFree;
+    } else if (title.includes("safe")) {
+        return safeSpace;
     } else {
-        return otherFacility;
+        return otherCenter;
     }
 }
 
 export function getIconByCategoryId(categoryId: number): LucideIcon {
     switch (categoryId) {
         case 0:
-            return Hospital; // Rehabilitation Center
+            return Hospital; // Rehabilitation
         case 1:
-            return Sofa; // Counseling Center
+            return Hospital; // Hospital
         case 2:
-            return Building2; // Other Facility
+            return Sofa; // Counselling
+        case 3:
+            return PhoneCall; // Toll Free
+        case 4:
+            return Shield; // Safe Space
+        case 5:
+            return Building2; // Other Center
         default:
             return Building2; // Fallback
     }

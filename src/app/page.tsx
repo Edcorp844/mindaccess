@@ -2,12 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Users, HeartHandshake, ArrowRight, Menu, X, Shield, Zap, Globe, Smartphone } from "lucide-react";
+import { MapPin, Users, HeartHandshake, ArrowRight, Menu, X, Shield, Zap, Globe, Smartphone, Facebook, Instagram, Twitter } from "lucide-react";
 import { FaGooglePlay } from "react-icons/fa6";
 import { SiApple } from "react-icons/si";
 import { useState, useEffect } from "react";
+import { UserMenu } from "@/components/UserMenu";
+import { useAuth } from "@/context/auth-context";
 
 export default function LandingPage() {
+  const { profile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -21,12 +24,14 @@ export default function LandingPage() {
     { label: "Features", href: "#features" },
     { label: "Our Mission", href: "#mission" },
     { label: "Directory", href: "/app" },
+    { label: "Contact", href: "/help" },
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const heroImages = [
-    "/images/Screenshot 2026-04-24 at 17.16.14.png",
-    "/images/Screenshot 2026-04-24 at 17.17.30.png",
+    "/images/siteShot0.png",
+    "/images/siteShot1.png",
+    "/images/siteShot2.png",
   ];
 
   useEffect(() => {
@@ -89,13 +94,7 @@ export default function LandingPage() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-
-            <Link
-              href="/app"
-              className="inline-flex items-center justify-center rounded-2xl bg-foreground text-background px-6 py-2.5 text-sm font-bold hover:scale-105 active:scale-95 transition-all shadow-xl shadow-foreground/10"
-            >
-              Launch App
-            </Link>
+            <UserMenu />
           </div>
 
           {/* Mobile Menu Button */}
@@ -126,6 +125,13 @@ export default function LandingPage() {
               onClick={() => setMobileMenuOpen(false)}
             >
               Launch Directory
+            </Link>
+            <Link
+              href="/login"
+              className="w-full py-4 border border-separator/50 text-center text-lg font-bold rounded-2xl"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Sign In
             </Link>
           </div>
         )}
@@ -411,12 +417,14 @@ export default function LandingPage() {
                 >
                   Start Exploring
                 </Link>
-                <Link
-                  href="/app/data"
-                  className="px-12 py-6 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-3xl text-2xl font-black hover:bg-white/20 transition-all"
-                >
-                  List Facility
-                </Link>
+                {profile?.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="px-12 py-6 bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-3xl text-2xl font-black hover:bg-white/20 transition-all"
+                  >
+                    Go to Dashboard
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -461,20 +469,34 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h5 className="font-black uppercase tracking-widest text-xs text-labelTertiary mb-8">Resource</h5>
+              <h5 className="font-black uppercase tracking-widest text-xs text-labelTertiary mb-8">Resources</h5>
               <ul className="space-y-4">
-                <li><Link href="/api/help" className="font-bold hover:text-systemGreen transition">Get Help</Link></li>
-                <li><Link href="/api/terms" className="font-bold hover:text-systemGreen transition">Privacy Policy</Link></li>
-                <li><Link href="/api/faq" className="font-bold hover:text-systemGreen transition">FAQ</Link></li>
+                <li><Link href="/help" className="font-bold hover:text-systemGreen transition">Help & Support</Link></li>
+                <li><Link href="/faq" className="font-bold hover:text-systemGreen transition">FAQ Center</Link></li>
+                <li><Link href="/terms" className="font-bold hover:text-systemGreen transition">Terms & Privacy</Link></li>
+                <li><Link href="/licenses" className="font-bold hover:text-systemGreen transition">Software Licenses</Link></li>
               </ul>
             </div>
             <div>
               <h5 className="font-black uppercase tracking-widest text-xs text-labelTertiary mb-8">Stay Connected</h5>
               <div className="flex gap-4">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-systemGreen hover:text-white transition-colors cursor-pointer">
-                    <Globe className="w-6 h-6" />
-                  </div>
+                {[
+                  {
+                    "link": "facebook.com/mindaccessug",
+                    "icon": <Facebook className="w-6 h-6" />
+                  },
+                  {
+                    "link": "x.com/mindaccessug",
+                    "icon": <Twitter className="w-6 h-6" />
+                  },
+                  {
+                    "link": "instagram.com/mindaccessug",
+                    "icon": <Instagram className="w-6 h-6" />
+                  },
+                ].map(i => (
+                  <Link key={i.link} href={i.link} className="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-systemGreen hover:text-white transition-colors cursor-pointer">
+                    {i.icon}
+                  </Link>
                 ))}
               </div>
             </div>

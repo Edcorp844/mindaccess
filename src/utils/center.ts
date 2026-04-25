@@ -1,4 +1,4 @@
-import { Building2, Hospital, LucideIcon, Sofa } from "lucide-react";
+import { Building2, Hospital, LucideIcon, Sofa, PhoneCall, Shield } from "lucide-react";
 
 export interface GPSCordinate{
     latitude: number;
@@ -32,6 +32,7 @@ export interface Center {
     category: Category;
     name: string;
     id: number;
+    firestoreId?: string;
     cordinates: GPSCordinate;
     description: string | undefined;
     open: string | undefined;
@@ -41,22 +42,44 @@ export interface Center {
 
 
 //categories 
-export const rehabCenter: Category = {
-    label: 'Rehabilitaion Center',
+export const rehabilitation: Category = {
+    label: 'Rehabilitation',
     icon: Hospital,
     color: 'systemRed',
     id: 0,
 };
 
-export const counselingCenter: Category = {
-    label: 'Counselling Center',
-    icon: Sofa,
-    color: 'systemBlue',
+export const hospital: Category = {
+    label: 'Hospital',
+    icon: Hospital,
+    color: 'systemRed',
     id: 1,
 };
- export const otherFacility: Category = {
-    label: 'Other Facility',
+
+export const counselling: Category = {
+    label: 'Counselling',
+    icon: Sofa,
+    color: 'systemBlue',
+    id: 2,
+};
+
+export const tollFree: Category = {
+    label: 'Toll Free',
+    icon: PhoneCall,
+    color: 'systemGreen',
+    id: 3,
+};
+
+export const safeSpace: Category = {
+    label: 'Safe Space',
+    icon: Shield,
+    color: 'systemPurple',
+    id: 4,
+};
+
+export const otherCenter: Category = {
+    label: 'Other Center',
     icon: Building2,
     color: 'systemPink',
-    id: 2,
+    id: 5,
 };

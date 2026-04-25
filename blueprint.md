@@ -18,15 +18,15 @@ MindAccess is a Next.js application designed for spatial data visualization and 
 - Responsive design principles.
 - Modern iconography via Lucide.
 
-## Implementation Plan: Resolve Missing Dependencies
-The user encountered a `sh: next: command not found` error when trying to run `npm run dev`. This was due to `node_modules` not being present in the project directory.
+## Implementation Plan: Firebase Authentication Integration
+Connect the application to Firebase and implement user authentication.
 
 ### Action Steps
-1. [x] Run `npm install` to install all project dependencies.
-2. [x] Verify that `next dev` can start successfully.
-3. [x] Create `blueprint.md` to track project state.
-4. [x] Add `PUT` method to `/api/centers` for updates.
-5. [x] Implement search bar in `/app/data` page.
-6. [x] Implement edit functionality (populate form from list) in `/app/data` page.
-7. [x] Update `handleSubmit` to support both Add and Update operations.
-8. [x] Add search functionality to main `CentersPage`.
+1. [ ] Install `firebase` dependency.
+2. [ ] Create Firebase configuration in `src/lib/firebase/config.ts`.
+3. [ ] Implement `AuthContext` in `src/context/auth-context.tsx`.
+4. [ ] Wrap root layout with `AuthProvider`.
+5. [ ] Create Login and Registration pages.
+6. [ ] Add `UserMenu` component to the header for user state display.
+7. [ ] Update `.env.local` with Firebase credential placeholders.
+

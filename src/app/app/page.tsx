@@ -3,10 +3,11 @@
 import Map, { NavigationControl, GeolocateControl, Marker, Source, Layer } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useState } from "react";
-import { Bell, Building, Cog, House } from "lucide-react";
+import { Bell, Building, Cog, House, LogOut, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import SidebarButton from "@/components/sidebarbutton";
-import { Category, Center, counselingCenter, otherFacility, rehabCenter } from "@/utils/center";
+import { Category, Center, rehabilitation, hospital, counselling, tollFree, safeSpace, otherCenter } from "@/utils/center";
 import MapFloatingCard from "@/components/MapFloatingCard";
 import { getIconByCategoryId } from "@/utils/helpers";
 import { useCenters } from "@/context/centers-context";
@@ -15,20 +16,36 @@ import CenterDetailsDrawer from "@/components/CenterDetailsDrawer";
 import CentersPage from "@/components/centerspage";
 import UpdatesPage from "@/components/updatespage";
 import SettingsPage from "@/components/settingspage";
+import { useAuth } from "@/context/auth-context";
+import { subscribeToNotifications } from "@/lib/firebase/notificationService";
 
 export default function Home() {
-
   const { selectedCenter, setSelectedCenter } = useCenters();
+  const { user, logOut } = useAuth();
+  const router = useRouter();
 
   const [active, setActive] = useState("home");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoadingDirections, setIsLoadingDirections] = useState<boolean>(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Live unread notification badge
+  useEffect(() => {
+    if (!user) return;
+    const unsub = subscribeToNotifications(user.uid, (notifs) => {
+      setUnreadCount(notifs.filter((n) => !n.read).length);
+    });
+    return () => unsub();
+  }, [user]);
 
   const options: Category[] = [
     { label: "All", id: -1, icon: House, color: "systemGreen" },
-    rehabCenter,
-    counselingCenter,
-    otherFacility,
+    rehabilitation,
+    hospital,
+    counselling,
+    tollFree,
+    safeSpace,
+    otherCenter,
   ];
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
@@ -141,8 +158,70 @@ export default function Home() {
 
           <SidebarButton icon={House} label="Home" isActive={active === "home"} onClick={() => setActive("home")} />
           <SidebarButton icon={Building} label="Centers" isActive={active === "centers"} onClick={() => setActive("centers")} />
-          <SidebarButton icon={Bell} label="Updates" isActive={active === "updates"} onClick={() => setActive("updates")} />
+
+          {/* Bell with unread badge */}
+          <div className="relative w-full">
+            <SidebarButton icon={Bell} label="Updates" isActive={active === "updates"} onClick={() => setActive("updates")} />
+            {unreadCount > 0 && (
+              <span className="absolute top-1 right-1 lg:right-4 min-w-[18px] h-[18px] px-1 rounded-full bg-systemRed text-white text-[10px] font-black flex items-center justify-center pointer-events-none">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
+          </div>
+
           <SidebarButton icon={Cog} label="Settings" isActive={active === "settings"} onClick={() => setActive("settings")} />
+
+          {/* Spacer pushes account to bottom */}
+          <div className="flex-1" />
+
+          {/* Account Panel */}
+          {user ? (
+            <div className="w-full rounded-2xl bg-backgroundLayer1 border border-separator/50 p-3 space-y-3">
+              {/* Avatar + info */}
+              <div className="flex items-center gap-3 min-w-0">
+                {user.photoURL ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName ?? "Avatar"}
+                    className="w-9 h-9 rounded-full border-2 border-systemGreen/40 shrink-0"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-systemGreen/15 border-2 border-systemGreen/30 flex items-center justify-center text-systemGreen text-xs font-black shrink-0">
+                    {user.displayName
+                      ? user.displayName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+                      : user.email?.[0].toUpperCase() ?? "U"}
+                  </div>
+                )}
+                <div className="hidden lg:block min-w-0">
+                  <p className="text-sm font-bold truncate leading-tight">
+                    {user.displayName ?? "User"}
+                  </p>
+                  <p className="text-xs text-labelSecondary truncate">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+              {/* Sign out */}
+              <button
+                id="sidebar-signout-btn"
+                onClick={async () => { await logOut(); router.replace("/"); }}
+                className="w-full flex items-center justify-center lg:justify-start gap-2 px-3 py-2 rounded-xl hover:bg-systemRed/10 text-systemRed text-xs font-bold transition-colors"
+              >
+                <LogOut className="w-4 h-4 shrink-0" />
+                <span className="hidden lg:inline">Sign Out</span>
+              </button>
+            </div>
+          ) : (
+            <button
+              id="sidebar-signin-btn"
+              onClick={() => router.push("/login")}
+              className="w-full flex items-center justify-center lg:justify-start gap-2 px-3 py-2.5 rounded-2xl bg-systemGreen/10 hover:bg-systemGreen/20 text-systemGreen text-xs font-black transition-colors border border-systemGreen/20"
+            >
+              <User className="w-4 h-4 shrink-0" />
+              <span className="hidden lg:inline">Sign In</span>
+            </button>
+          )}
         </aside>
 
         {/* Desktop Side Details Panel — appears tight beside sidebar */}
@@ -255,8 +334,14 @@ export default function Home() {
             </button>
 
             <button onClick={() => setActive("updates")}
-              className={`flex flex-col items-center flex-1 rounded-full p-1 ${active === "updates" ? "bg-systemGreen text-white" : ""}`}>
-              <Bell className="w-6 h-6" /><span className="text-xs font-medium">Updates</span>
+              className={`relative flex flex-col items-center flex-1 rounded-full p-1 ${active === "updates" ? "bg-systemGreen text-white" : ""}`}>
+              <Bell className="w-6 h-6" />
+              {unreadCount > 0 && (
+                <span className="absolute top-0 right-1/4 min-w-[16px] h-4 px-0.5 rounded-full bg-systemRed text-white text-[9px] font-black flex items-center justify-center pointer-events-none">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+              <span className="text-xs font-medium">Updates</span>
             </button>
 
             <button onClick={() => setActive("settings")}

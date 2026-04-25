@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { CentersProvider } from "@/context/centers-context";
+import { AuthProvider } from "@/context/auth-context";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -27,7 +28,9 @@ export default function RootLayout({
       <body
         className={`${jakarta.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <CentersProvider>{children}</CentersProvider>
+        <AuthProvider>
+          <CentersProvider>{children}</CentersProvider>
+        </AuthProvider>
       </body>
     </html>
   );
