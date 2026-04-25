@@ -1,11 +1,29 @@
 import * as admin from "firebase-admin";
 
 if (!admin.apps.length) {
-  // Try to initialize using application default credentials, or just projectId if running locally without service account.
-  // Note: if you have a service account JSON, you can set GOOGLE_APPLICATION_CREDENTIALS environment variable.
-  admin.initializeApp({
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  });
+  const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
+  
+  if (serviceAccount) {
+    // If you have the whole JSON as a string
+    const config = JSON.parse(serviceAccount);
+    admin.initializeApp({
+      credential: admin.credential.cert(config),
+    });
+  } else if (process.env.FIREBASE_PRIVATE_KEY) {
+    // If you prefer individual variables
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      }),
+    });
+  } else {
+    // Fallback for local dev or GCP environments
+    admin.initializeApp({
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    });
+  }
 }
 
 export const adminDb = admin.firestore();
