@@ -1,0 +1,10 @@
+{
+  "name": "MindAccess",
+  "description": "Comprehensive mental health and rehabilitation directory, geolocation map, and care connection platform in Uganda.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
