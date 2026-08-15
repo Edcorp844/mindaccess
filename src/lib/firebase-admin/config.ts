@@ -29,6 +29,14 @@ if (!admin.apps.length) {
 export const adminDb = admin.firestore();
 export const adminAuth = admin.auth();
 
+export function getAdminAuth() {
+  return adminAuth;
+}
+
+export function getAdminDb() {
+  return adminDb;
+}
+
 /**
  * Helper function to verify a Bearer token from the request Authorization header
  * and check if the user has the "admin" role.
